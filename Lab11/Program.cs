@@ -206,7 +206,8 @@ namespace lab1_2
             taxiBoard.BoardPassenger("Jane Wallis");
             taxiBoard.BoardPassenger("Alice Green");
             taxiBoard.BoardPassenger("James Firewood");
-            //taxiBoard.BoardPassenger("Charlie White");
+            taxiBoard.PrintAllPersons();
+            taxiBoard.LetsGo();
 
             BoardBus busBoard = new BoardBus();
             busBoard.BoardPassenger("Lancelot Donovan");
@@ -219,9 +220,17 @@ namespace lab1_2
             busBoard.PrintAllPersons();
             busBoard.LetsGo();
 
+            BoardTaxi taxiboard2 = new BoardTaxi();
+            taxiboard2.SetDriver();
+            taxiboard2.BoardPassenger("Feather1");
+            taxiboard2.BoardPassenger("Feather2");
+            taxiboard2.BoardPassenger("Feather3");
+            taxiboard2.BoardPassenger("Feather4");
+            taxiboard2.BoardPassenger("Feather5");
+            taxiboard2.PrintAllPersons();
+            taxiboard2.LetsGo();
+
             Console.WriteLine("------------------------------");
-            taxiBoard.PrintAllPersons();
-            taxiBoard.LetsGo();
             Console.ReadKey(); // Чтобы консоль не закрывалась сразу
 
         }
