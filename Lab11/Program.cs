@@ -202,20 +202,20 @@ namespace lab1_2
         {
             BoardTaxi taxiBoard = new BoardTaxi(); // Создаем экземпляр BoardTaxi
             taxiBoard.SetDriver();
-            taxiBoard.BoardPassenger("John Doe");
-            taxiBoard.BoardPassenger("Jane Smith");
-            taxiBoard.BoardPassenger("Alice Johnson");
-            taxiBoard.BoardPassenger("Bob Brown");
+            taxiBoard.BoardPassenger("John Fall");
+            taxiBoard.BoardPassenger("Jane Wallis");
+            taxiBoard.BoardPassenger("Alice Green");
+            taxiBoard.BoardPassenger("James Firewood");
             //taxiBoard.BoardPassenger("Charlie White");
 
             BoardBus busBoard = new BoardBus();
-            busBoard.BoardPassenger("David Green");
-            busBoard.BoardPassenger("Emma Blue");
-            busBoard.BoardPassenger("John Doe");
-            busBoard.BoardPassenger("Jane Smith");
-            busBoard.BoardPassenger("Alice Johnson");
-            busBoard.BoardPassenger("Bob Brown");
-            busBoard.BoardPassenger("Charlie White");
+            busBoard.BoardPassenger("Lancelot Donovan");
+            busBoard.BoardPassenger("Natali Tompson");
+            busBoard.BoardPassenger("Bill Gordon");
+            busBoard.BoardPassenger("Jack Firewood");
+            busBoard.BoardPassenger("Nakamura Isami");
+            busBoard.BoardPassenger("Rayan Force");
+            busBoard.BoardPassenger("Matt Stablee");
             busBoard.PrintAllPersons();
             busBoard.LetsGo();
 
