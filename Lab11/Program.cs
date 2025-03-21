@@ -16,21 +16,18 @@ namespace lab1_2
             name = set_name;
             category = set_category;
         }
-        public void information(){
-            Console.WriteLine("Passenger ",name, " of ", category, " category is on board");
+        public void info(){
+            Console.WriteLine("Passenger " + name + " of " + category + " category is on board");
         }
     }
 
     abstract class Driver {
-        abstract public void information();
-        public string license;
+        abstract public void info();
+        public string license{ get; set; }
     }
 
     class BusDriver : Driver{
-        
-    public static string license = "Bus";
-
-    public override void information()
+    public override void info()
     {
       Console.WriteLine("Bus driver is on board");
     }
@@ -40,9 +37,7 @@ namespace lab1_2
 
     class TaxiDriver : Driver{
 
-    public static string license = "Taxi";
-
-    public override void information()
+    public override void info()
     {
       Console.WriteLine("Taxi driver is on board");
     }
@@ -50,24 +45,23 @@ namespace lab1_2
     }
 
     abstract class Car{
-        public int PassengerLimit;
-
         public List<Passenger> passengers { get; } = new List<Passenger>();
       
         public Driver driver { get; set; }
 
         public abstract void BoardPassenger(Passenger passenger);
 
-        public abstract void information();
+        public abstract void info();
     }
 
     class TaxiCar: Car{
+        public bool childseat { get; set; }
         public static int PassengerLimit = 4;
         public override void BoardPassenger(Passenger passenger)
         {
             passengers.Add(passenger);
         }
-        public override void information(){
+        public override void info(){
             Console.WriteLine("The taxi is ready");
         }
     }
@@ -78,7 +72,7 @@ namespace lab1_2
         {
             passengers.Add(passenger);
         }
-        public override void information(){
+        public override void info(){
             Console.WriteLine("The bus is ready");
         }
     }
@@ -98,27 +92,62 @@ namespace lab1_2
 
         
         public BusDriver HireBusDriver(){
-            return new BusDriver();
+            BusDriver bus = new BusDriver();
+            bus.license = "Bus";
+            return bus;
         }
 
         public TaxiDriver HireTaxiDriver(){
-            return new TaxiDriver();
+            TaxiDriver bus = new TaxiDriver();
+            bus.license = "Taxi";
+            return bus;
         }
-        public BusCar CreateBus(Avtovaz vaz){
-            return vaz.CreateBus();
+        public BusCar CreateAndFillBus(Avtovaz vaz, Driver driver, List<Passenger> passengers){
+            BusCar bus = vaz.CreateBus();
+            bus.driver = driver;
+            foreach(Passenger passenger in passengers){
+                bus.BoardPassenger(passenger);
+            }
+            return bus;
         }
-        public TaxiCar CreateTaxi(Avtovaz vaz){
-            return vaz.CreateTaxi();
+        public TaxiCar CreateAndFillTaxi(Avtovaz vaz, Driver driver, List<Passenger> passengers, bool childseat){
+            TaxiCar taxi = vaz.CreateTaxi();
+            taxi.driver = driver;
+            foreach(Passenger passenger in passengers){
+                taxi.BoardPassenger(passenger);
+            }
+            taxi.childseat = childseat;
+            return taxi;
         }
 
-        public void SetDriver(Car car, Driver driver){
-            car.driver = driver;
-        }
+        public void StartBus(BusCar car){
+            bool adults = false;
+            foreach(Passenger passenger in car.passengers){
+                if (String.Compare(passenger.category,"adult")==0 | String.Compare(passenger.category,"disabled")==0){
+                    adults = true;
+                }
+            }
 
-        public void BoardPassenger(Car car, Passenger passenger){
-            car.BoardPassenger(passenger);
+            if(String.Compare(car.driver.license,"Bus")!=0){
+                Console.WriteLine("The driver has no license for this transport");
+            }else if(car.driver == null){
+                Console.WriteLine("No driver");
+            }else if(car.passengers.Count == 0){
+                Console.WriteLine("No passengers");
+            }else if(car.passengers.Count > BusCar.PassengerLimit){
+                Console.WriteLine("Too many passengers: ",car.passengers.Count);
+            }else if(adults == false){
+                Console.WriteLine("Children cannot go without adults");
+            }else{
+                car.info();
+                car.driver.info();
+                for(int i = 0; i < car.passengers.Count;i++){
+                    car.passengers[i].info();
+                }
+                Console.WriteLine("Good drive");
+            }
         }
-        public void Start(Car car){
+        public void StartTaxi(TaxiCar car){
             bool adults = false;
             foreach(Passenger passenger in car.passengers){
                 if (String.Compare(passenger.category,"adult")==0 | String.Compare(passenger.category,"disabled")==0){
@@ -128,28 +157,30 @@ namespace lab1_2
             bool children = false;
             foreach(Passenger passenger in car.passengers){
                 if (String.Compare(passenger.category,"child")==0){
-                    adults = true;
+                    children = true;
                 }
             }
-            if(0 < car.passengers.Count & adults & car.passengers.Count <= car.PassengerLimit & car.driver != null){
-                if(String.Compare(car.driver.license,"Bus")==0 & car.PassengerLimit == 30 | String.Compare(car.driver.license,"Taxi")==0 & car.PassengerLimit == 4){
-                    car.information();
-                    car.driver.information();
-                    foreach(Passenger passenger in car.passengers){
-                        passenger.information();
-                    }
-                    Console.WriteLine("Good drive");
-                }
+            
+            if(String.Compare(car.driver.license,"Taxi")!=0){
+                Console.WriteLine("The driver has no license for this transport");
             }else if(car.driver == null){
                 Console.WriteLine("No driver");
             }else if(car.passengers.Count == 0){
                 Console.WriteLine("No passengers");
+            }else if(car.passengers.Count > TaxiCar.PassengerLimit){
+                Console.WriteLine("Too many passengers: ",car.passengers.Count);
             }else if(adults == false){
                 Console.WriteLine("Children cannot go without adults");
-            }else if(car.driver.license == "Bus" & car.PassengerLimit == 4 | car.driver.license == "Taxi" & car.PassengerLimit == 30){
-                Console.WriteLine("The driver has no license for this transport");
-            }
-
+            }else if(children&car.childseat==false){
+                Console.WriteLine("No childseat");
+            }else{
+                car.info();
+                car.driver.info();
+                for(int i = 0; i < car.passengers.Count;i++){
+                    car.passengers[i].info();
+                }
+                Console.WriteLine("Good drive");
+            }                
         }
     }
 
@@ -160,15 +191,20 @@ namespace lab1_2
         {
             Mosgortrans company = new Mosgortrans();
             Avtovaz vaz = new Avtovaz();
-            BusCar Bus1 = company.CreateBus(vaz);
-            TaxiCar Taxi1 = company.CreateTaxi(vaz);
-            TaxiCar Taxi2 = company.CreateTaxi(vaz);
-            TaxiCar Taxi3 = company.CreateTaxi(vaz);
-            TaxiDriver taxidriver = company.HireTaxiDriver();
+            List<Passenger> list_short = new List<Passenger>(){new Passenger("Alice","adult"),new Passenger("Jenny","child")};            
+            List<Passenger> list_children = new List<Passenger>(){new Passenger("Jenny","child")};
             BusDriver busdriver = company.HireBusDriver();
-            company.SetDriver(Bus1, busdriver);
-            company.BoardPassenger(Bus1,new Passenger("Alice","adult"));
-            company.Start(Bus1);
+            TaxiDriver taxidriver = company.HireTaxiDriver();
+            BusCar Bus1 = company.CreateAndFillBus(vaz,busdriver,list_short);
+            TaxiCar Taxi1 = company.CreateAndFillTaxi(vaz,busdriver,list_short,true);
+            TaxiCar Taxi2 = company.CreateAndFillTaxi(vaz,taxidriver,list_children,true);
+            TaxiCar Taxi3 = company.CreateAndFillTaxi(vaz,taxidriver,list_short,false);
+            company.StartBus(Bus1);
+            company.StartTaxi(Taxi1);
+            company.StartTaxi(Taxi2);          
+            company.StartTaxi(Taxi3);
+
+
 
 
         }
