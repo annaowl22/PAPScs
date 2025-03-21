@@ -4,194 +4,152 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace lab1_2
 {
-    abstract class Driver
-    {
-        public abstract void info();
-    }
 
+    class Passenger{
+        public string name;
+        public string category;
 
-    class BusDriver : Driver
-    {
-        private static readonly BusDriver instance = new BusDriver();
-
-        public BusDriver() { } // Private constructor
-
-        public override void info()
-        {
-            Console.WriteLine("Bus Driver on board");
+        public Passenger(string set_name, string set_category){
+            name = set_name;
+            category = set_category;
         }
-
-        public static BusDriver Instance
-        {
-            get { return instance; }
+        public void information(){
+            Console.WriteLine("Passenger ",name, " of ", category, " category is on board");
         }
     }
 
+    abstract class Driver {
+        abstract public void information();
+        public string license;
+    }
 
-    class TaxiDriver : Driver
+    class BusDriver : Driver{
+        
+    public static string license = "Bus";
+
+    public override void information()
     {
-        private static readonly TaxiDriver instance = new TaxiDriver();
+      Console.WriteLine("Bus driver is on board");
+    }
 
-        public TaxiDriver() { } // Private constructor
-
-        public override void info()
-        {
-            Console.WriteLine("Taxi driver is here");
-        }
-
-        public static TaxiDriver Instance
-        {
-            get { return instance; }
-        }
     }
 
 
-    public class Passenger
+    class TaxiDriver : Driver{
+
+    public static string license = "Taxi";
+
+    public override void information()
     {
-        public string Name { get; }
+      Console.WriteLine("Taxi driver is on board");
+    }
 
-        public Passenger(string name)
+    }
+
+    abstract class Car{
+        public int PassengerLimit;
+
+        public List<Passenger> passengers { get; } = new List<Passenger>();
+      
+        public Driver driver { get; set; }
+
+        public abstract void BoardPassenger(Passenger passenger);
+
+        public abstract void information();
+    }
+
+    class TaxiCar: Car{
+        public static int PassengerLimit = 4;
+        public override void BoardPassenger(Passenger passenger)
         {
-            Name = name;
+            passengers.Add(passenger);
         }
-
-        public string GetPerson()
-        {
-            return Name;
+        public override void information(){
+            Console.WriteLine("The taxi is ready");
         }
     }
 
-
-    abstract class BoardAnyCar
-    {
-        public int LimitPassengers { get; } // Свойство с private set
-
-        protected List<Passenger> passengers { get; } = new List<Passenger>();
-        protected Driver driver { get; set; }
-
-        public BoardAnyCar(int limit)
+    class BusCar: Car{
+        public static int PassengerLimit = 30;
+        public override void BoardPassenger(Passenger passenger)
         {
-            LimitPassengers = limit; // Присваиваем значение свойству LimitPassengers
+            passengers.Add(passenger);
+        }
+        public override void information(){
+            Console.WriteLine("The bus is ready");
+        }
+    }
+
+    class Avtovaz{
+        public BusCar CreateBus(){
+            return new BusCar();
         }
 
-        public abstract Driver CreateDriver();
-        public abstract void GetInfoAboutVehicle();
-
-        public virtual void BoardPassenger(string passengerName)
-        {
-            passengers.Add(new Passenger(passengerName));
+        public TaxiCar CreateTaxi(){
+            return new TaxiCar();
         }
 
-        public virtual void SetDriver()
-        {
-            driver = CreateDriver();
+    }
+
+    class Mosgortrans{
+
+        
+        public BusDriver HireBusDriver(){
+            return new BusDriver();
         }
 
-        public Driver GetDriver()
-        {
-            return driver;
+        public TaxiDriver HireTaxiDriver(){
+            return new TaxiDriver();
+        }
+        public BusCar CreateBus(Avtovaz vaz){
+            return vaz.CreateBus();
+        }
+        public TaxiCar CreateTaxi(Avtovaz vaz){
+            return vaz.CreateTaxi();
         }
 
-        public int GetLimitPassengers()
-        {
-            return LimitPassengers;
+        public void SetDriver(Car car, Driver driver){
+            car.driver = driver;
         }
 
-        public void PrintPassengers()
-        {
-            Console.WriteLine("Пассажиры: ");
-            foreach (var passenger in passengers)
-            {
-                Console.WriteLine(" - " + passenger.GetPerson());
-            }
+        public void BoardPassenger(Car car, Passenger passenger){
+            car.BoardPassenger(passenger);
         }
-
-        public void PrintDriver()
-        {
-            if (driver != null)
-            {
-                driver.info();
-            }
-            else
-            {
-                Console.WriteLine("Водитель не назначен.");
-            }
-        }
-
-        public void PrintAllPersons()
-        {
-            GetInfoAboutVehicle();
-            PrintPassengers();
-            PrintDriver();
-            Console.WriteLine("\n\n");
-        }
-
-        public virtual bool LetsGo()
-        {
-            GetInfoAboutVehicle();
-            if (0 < passengers.Count && passengers.Count <= LimitPassengers && driver != null)
-            {
-                Console.WriteLine("Поездка осуществима.");
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("Поездка не осуществима:");
-                if (passengers.Count > LimitPassengers)
-                {
-                    Console.WriteLine(" - Превышен лимит пассажиров: " + passengers.Count + " при " + LimitPassengers + " допустимых.");
+        public void Start(Car car){
+            bool adults = false;
+            foreach(Passenger passenger in car.passengers){
+                if (String.Compare(passenger.category,"adult")==0 | String.Compare(passenger.category,"disabled")==0){
+                    adults = true;
                 }
-                if (passengers.Count == 0)
-                {
-                    Console.WriteLine(" - Отсутствуют пассажиры.");
-                }
-                if (driver == null)
-                {
-                    Console.WriteLine(" - Водитель остутсвует.");
-                }
-                return false;
             }
-        }
+            bool children = false;
+            foreach(Passenger passenger in car.passengers){
+                if (String.Compare(passenger.category,"child")==0){
+                    adults = true;
+                }
+            }
+            if(0 < car.passengers.Count & adults & car.passengers.Count <= car.PassengerLimit & car.driver != null){
+                if(String.Compare(car.driver.license,"Bus")==0 & car.PassengerLimit == 30 | String.Compare(car.driver.license,"Taxi")==0 & car.PassengerLimit == 4){
+                    car.information();
+                    car.driver.information();
+                    foreach(Passenger passenger in car.passengers){
+                        passenger.information();
+                    }
+                    Console.WriteLine("Good drive");
+                }
+            }else if(car.driver == null){
+                Console.WriteLine("No driver");
+            }else if(car.passengers.Count == 0){
+                Console.WriteLine("No passengers");
+            }else if(adults == false){
+                Console.WriteLine("Children cannot go without adults");
+            }else if(car.driver.license == "Bus" & car.PassengerLimit == 4 | car.driver.license == "Taxi" & car.PassengerLimit == 30){
+                Console.WriteLine("The driver has no license for this transport");
+            }
 
-    }
-
-
-    class BoardTaxi : BoardAnyCar
-    {
-        public const int LimitPassengers = 4; // Константа лимита пассажиров
-
-        public BoardTaxi() : base(LimitPassengers) { } // Передаем лимит в базовый класс
-
-
-
-        public override Driver CreateDriver()
-        {
-            return new TaxiDriver(); // Возвращаем указатель на TaxiDriver
-        }
-
-        public override void GetInfoAboutVehicle()
-        {
-            Console.WriteLine("Такси:"); //Исправлено на "Такси", а не "Автобус"
-        }
-    }
-
-
-    class BoardBus : BoardAnyCar
-    {
-        public const int LimitPassengers = 30; // Константа лимита пассажиров
-
-        public BoardBus() : base(LimitPassengers) { } // Передаем лимит в базовый класс
-
-        public override Driver CreateDriver()
-        {
-            return new BusDriver(); // Возвращаем указатель на TaxiDriver
-        }
-
-        public override void GetInfoAboutVehicle()
-        {
-            Console.WriteLine("Автобус:"); //Исправлено на "Такси", а не "Автобус"
         }
     }
 
@@ -200,38 +158,18 @@ namespace lab1_2
     {
         static void Main(string[] args)
         {
-            BoardTaxi taxiBoard = new BoardTaxi(); // Создаем экземпляр BoardTaxi
-            taxiBoard.SetDriver();
-            taxiBoard.BoardPassenger("John Fall");
-            taxiBoard.BoardPassenger("Jane Wallis");
-            taxiBoard.BoardPassenger("Alice Green");
-            taxiBoard.BoardPassenger("James Firewood");
-            taxiBoard.PrintAllPersons();
-            taxiBoard.LetsGo();
+            Mosgortrans company = new Mosgortrans();
+            Avtovaz vaz = new Avtovaz();
+            BusCar Bus1 = company.CreateBus(vaz);
+            TaxiCar Taxi1 = company.CreateTaxi(vaz);
+            TaxiCar Taxi2 = company.CreateTaxi(vaz);
+            TaxiCar Taxi3 = company.CreateTaxi(vaz);
+            TaxiDriver taxidriver = company.HireTaxiDriver();
+            BusDriver busdriver = company.HireBusDriver();
+            company.SetDriver(Bus1, busdriver);
+            company.BoardPassenger(Bus1,new Passenger("Alice","adult"));
+            company.Start(Bus1);
 
-            BoardBus busBoard = new BoardBus();
-            busBoard.BoardPassenger("Lancelot Donovan");
-            busBoard.BoardPassenger("Natali Tompson");
-            busBoard.BoardPassenger("Bill Gordon");
-            busBoard.BoardPassenger("Jack Firewood");
-            busBoard.BoardPassenger("Nakamura Isami");
-            busBoard.BoardPassenger("Rayan Force");
-            busBoard.BoardPassenger("Matt Stablee");
-            busBoard.PrintAllPersons();
-            busBoard.LetsGo();
-
-            BoardTaxi taxiboard2 = new BoardTaxi();
-            taxiboard2.SetDriver();
-            taxiboard2.BoardPassenger("Feather1");
-            taxiboard2.BoardPassenger("Feather2");
-            taxiboard2.BoardPassenger("Feather3");
-            taxiboard2.BoardPassenger("Feather4");
-            taxiboard2.BoardPassenger("Feather5");
-            taxiboard2.PrintAllPersons();
-            taxiboard2.LetsGo();
-
-            Console.WriteLine("------------------------------");
-            Console.ReadKey(); // Чтобы консоль не закрывалась сразу
 
         }
     }
