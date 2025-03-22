@@ -78,12 +78,39 @@ namespace lab1_2
     }
 
     class Avtovaz{
-        public BusCar CreateBus(){
-            return new BusCar();
+        public BusCar CreateBus( Driver driver, List<Passenger> passengers){
+            BusCar bus = new BusCar();
+            bus.driver = driver;
+            if(passengers!=null){
+            foreach(Passenger passenger in passengers){
+                bus.BoardPassenger(passenger);
+            }
+            }
+            return bus;
         }
 
-        public TaxiCar CreateTaxi(){
-            return new TaxiCar();
+        public TaxiCar CreateTaxi(Driver driver, List<Passenger> passengers, bool childseat){
+            TaxiCar taxi = new TaxiCar();
+            taxi.driver = driver;
+            if(passengers!=null){
+            foreach(Passenger passenger in passengers){
+                taxi.BoardPassenger(passenger);
+            }
+            }
+            taxi.childseat = childseat;
+            return taxi;
+        }
+        public BusCar CreateBus(Driver driver){
+            BusCar taxi = new BusCar();
+            taxi.driver = driver;
+            return taxi;
+        }
+
+        public TaxiCar CreateTaxi(Driver driver, bool childseat){
+            TaxiCar taxi = new TaxiCar();
+            taxi.driver = driver;
+            taxi.childseat = childseat;
+            return taxi;
         }
 
     }
@@ -102,22 +129,25 @@ namespace lab1_2
             bus.license = "Taxi";
             return bus;
         }
-        public BusCar CreateAndFillBus(Avtovaz vaz, Driver driver, List<Passenger> passengers){
-            BusCar bus = vaz.CreateBus();
-            bus.driver = driver;
-            foreach(Passenger passenger in passengers){
-                bus.BoardPassenger(passenger);
+        public BusCar CreateAndFillBus(Avtovaz vaz, Driver driver, List<Passenger> passengers=null){
+            if(passengers==null){
+                BusCar bus = vaz.CreateBus(driver);
+                return bus;
+            }else{
+                BusCar bus = vaz.CreateBus(driver,passengers);
+                return bus;
             }
-            return bus;
+
         }
-        public TaxiCar CreateAndFillTaxi(Avtovaz vaz, Driver driver, List<Passenger> passengers, bool childseat){
-            TaxiCar taxi = vaz.CreateTaxi();
-            taxi.driver = driver;
-            foreach(Passenger passenger in passengers){
-                taxi.BoardPassenger(passenger);
+        public TaxiCar CreateAndFillTaxi(Avtovaz vaz, Driver driver, List<Passenger> passengers=null, bool childseat=false){
+            if(passengers==null){
+                TaxiCar taxi = vaz.CreateTaxi(driver,childseat);
+                return taxi;
+            }else{
+                TaxiCar taxi = vaz.CreateTaxi(driver,passengers,childseat);
+                return taxi;
             }
-            taxi.childseat = childseat;
-            return taxi;
+
         }
 
         public void StartBus(BusCar car){
@@ -199,10 +229,13 @@ namespace lab1_2
             TaxiCar Taxi1 = company.CreateAndFillTaxi(vaz,busdriver,list_short,true);
             TaxiCar Taxi2 = company.CreateAndFillTaxi(vaz,taxidriver,list_children,true);
             TaxiCar Taxi3 = company.CreateAndFillTaxi(vaz,taxidriver,list_short,false);
+            TaxiCar Taxi4 = company.CreateAndFillTaxi(vaz,taxidriver);
             company.StartBus(Bus1);
             company.StartTaxi(Taxi1);
             company.StartTaxi(Taxi2);          
-            company.StartTaxi(Taxi3);
+            company.StartTaxi(Taxi3);          
+            company.StartTaxi(Taxi4);
+
 
 
 
