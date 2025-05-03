@@ -55,7 +55,7 @@ public class TabulationRule : Rule
         text = Regex.Replace(text, @"\n {4}", "\n\t");
         
         // Удаляем все другие табы/4 пробела в середине текста
-        text = Regex.Replace(text, @"[^\n] {4}", " ");
+        text = Regex.Replace(text, @"(\S) {4}", "$1 ");
         return text;
     }
 }
@@ -116,13 +116,14 @@ class Program
         }
         else{
         string text = File.ReadAllText(inputPath, Encoding.UTF8);
-        Console.WriteLine($"Сырой текст: {text.Replace("\n", "\\n").Replace("\t", "\\t")}");
+        Console.WriteLine($"Сырой текст:\n {text}\n");
 
         var interpreter = new TextInterpreter();
         string result = interpreter.Interpret(text);
 
         File.WriteAllText(outputPath, result, Encoding.UTF8);
-        Console.WriteLine(result.Replace("\n", "\\n").Replace("\t", "\\t"));
+        Console.WriteLine("Исправленный текст:\n");
+        Console.WriteLine(result);
         Console.WriteLine($"Результат сохранён в {outputPath}");
         }
     }
