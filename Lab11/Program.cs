@@ -12,7 +12,7 @@ public class ExtraSpacesRule : Rule
 {
     public override string Apply(string text)
     {
-        return Regex.Replace(text, @"\s+", " ");
+        return Regex.Replace(text, @"[^\S\n\t]+", " ");
     }
 }
 
@@ -20,7 +20,7 @@ public class ExtraBlanksRule : Rule
 {
     public override string Apply(string text)
     {
-        return Regex.Replace(text, @"\n+", "\n");
+        return Regex.Replace(text, @"(\n){3,}", "\n\n");
     }
 }
 
@@ -47,6 +47,32 @@ public class DashRule : Rule
     }
 }
 
+public class TabulationRule : Rule
+{
+    public override string Apply(string text)
+    {
+        // Заменяем 4 пробела в начале строки на \t
+        text = Regex.Replace(text, @"\n {4}", "\n\t");
+        
+        // Удаляем все другие табы/4 пробела в середине текста
+        text = Regex.Replace(text, @"[^\n] {4}", " ");
+        return text;
+    }
+}
+public class PunctuationSpacesRule : Rule
+{
+    public override string Apply(string text)
+    {
+        // Удаляем пробелы ПЕРЕД знаками пунктуации: . , ! ? ) ] } »
+        text = Regex.Replace(text, @"\s+([.,!?)\]»])", "$1");
+        
+        // Удаляем пробелы ПОСЛЕ знаков пунктуации: ( [ { «
+        text = Regex.Replace(text, @"([(\[«{])\s+", "$1");
+        
+        return text;
+    }
+}
+
 // Интерпретатор текста
 public class TextInterpreter
 {
@@ -56,9 +82,12 @@ public class TextInterpreter
     {
         _rules = new Rule[]
         {
+            new ExtraBlanksRule(),
+            new TabulationRule(),
             new ExtraSpacesRule(),
             new QuotesRule(),
-            new DashRule()
+            new DashRule(),
+            new PunctuationSpacesRule()
         };
     }
 
@@ -78,8 +107,8 @@ class Program
     static void Main()
     {
         // Чтение из файла
-        string inputPath = "input.txt";
-        string outputPath = "output.txt";
+        string inputPath = "/workspaces/PAPScs/Lab11/input.txt";
+        string outputPath = "/workspaces/PAPScs/Lab11/output.txt";
 
         if (!File.Exists(inputPath))
         {
@@ -87,12 +116,13 @@ class Program
         }
         else{
         string text = File.ReadAllText(inputPath, Encoding.UTF8);
+        Console.WriteLine($"Сырой текст: {text.Replace("\n", "\\n").Replace("\t", "\\t")}");
 
         var interpreter = new TextInterpreter();
         string result = interpreter.Interpret(text);
 
         File.WriteAllText(outputPath, result, Encoding.UTF8);
-        Console.WriteLine(result);
+        Console.WriteLine(result.Replace("\n", "\\n").Replace("\t", "\\t"));
         Console.WriteLine($"Результат сохранён в {outputPath}");
         }
     }
