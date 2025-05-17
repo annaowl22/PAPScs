@@ -91,15 +91,24 @@ class SaleHunter : IObserver
     {
         Assortiment new_assortiment = (Assortiment)assortiment;
         string response = Name + " says: Today are sales: \n";
+        int salecount = 0;
         foreach (var product in new_assortiment.products)
         {
             if (product.Value < previous_assortiment.products[product.Key])
             {
                 int sale = previous_assortiment.products[product.Key] - product.Value;
-                response += "The " + product.Key + " is " + sale.ToString() + " cheaper than yesterday\n";
+                response += "The " + product.Key + " is " + sale.ToString() + " rubles cheaper than yesterday\n";
+                salecount += 1;
             }
         }
-        Console.WriteLine(response);
+        if (salecount == 0)
+        {
+            Console.WriteLine(Name + " says: No sales today(");
+        }
+        else
+        {
+            Console.WriteLine(response);
+        }        
         foreach (var product in new_assortiment.products)
         {
             previous_assortiment.products[product.Key] = product.Value;
@@ -121,11 +130,11 @@ class Student : IObserver
         Assortiment assort = (Assortiment)assortiment;
         if (assort.products["bread"] + assort.products["sausages"] + assort.products["eggs"] > Budget)
         {
-            Console.WriteLine(Name + " says: Today I'm not eating(((\n");
+            Console.WriteLine(Name + " says: Today I'm not eating(((");
         }
         else
         {
-            Console.WriteLine(Name + " says: Today I'm eating)))\n");
+            Console.WriteLine(Name + " says: Today I'm eating)))");
         }
     }
 }
@@ -161,6 +170,7 @@ class Program()
         market.RegisterObserver(maks);
         market.RegisterObserver(bree);
         market.RegisterObserver(katya);
+        market.UpdateAssortiment();
         market.UpdateAssortiment();
         market.UpdateAssortiment();
     }
