@@ -1,130 +1,167 @@
-﻿
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Net.Http.Headers;
+using System.Reflection;
 
-public abstract class Rule
+interface IObserver
 {
-    public abstract string Apply(string text);
+    void Update(Object ob);
 }
 
-// Удаление лишних пробелов
-public class ExtraSpacesRule : Rule
+interface IObservable
 {
-    public override string Apply(string text)
+    void RegisterObserver(IObserver o);
+    void RemoveObserver(IObserver o);
+    void NotifyObservers();
+}
+
+class Assortiment
+{
+    public Dictionary<string, int> products;
+    public Assortiment()
     {
-        return Regex.Replace(text, @"[^\S\n\t]+", " ");
+        products = new Dictionary<string, int>();
+        Random random = new Random();
+        products.Add("bread", 0);
+        products.Add("cabbage", 0);
+        products.Add("carrot", 0);
+        products.Add("champoo", 0);
+        products.Add("eggs", 0);
+        products.Add("potato", 0);
+        products.Add("sausages", 0);
+        products.Add("soap", 0);
+    }
+    public void UpdateAssortiment()
+    {
+        Random random = new Random();
+        products["bread"] = random.Next(20, 40);
+        products["cabbage"] = random.Next(20, 30);
+        products["carrot"] = random.Next(30, 50);
+        products["champoo"] = random.Next(100, 130);
+        products["eggs"] = random.Next(90, 120);
+        products["potato"] = random.Next(60, 100);
+        products["sausages"] = random.Next(160, 250);
+        products["soap"] = random.Next(70, 90);
     }
 }
 
-public class ExtraBlanksRule : Rule
+class YandexMarket : IObservable
 {
-    public override string Apply(string text)
+    Assortiment assortiment;
+    List<IObserver> customers;
+    public YandexMarket()
     {
-        return Regex.Replace(text, @"(\n){3,}", "\n\n");
+        assortiment = new Assortiment();
+        customers = new List<IObserver>();
     }
-}
 
-// Замена кавычек
-public class QuotesRule : Rule
-{
-    public override string Apply(string text)
+    public void RegisterObserver(IObserver observer)
     {
-        // Замена открывающей кавычки (перед словом)
-        text = Regex.Replace(text, @"(\W|^)""(\w)", "$1«$2");
-        // Замена закрывающей кавычки (после слова)
-        text = Regex.Replace(text, @"(\w)""(\W|$)", "$1»$2");
-        return text;
+        customers.Add(observer);
     }
-}
-
-
-// Дефис → тире
-public class DashRule : Rule
-{
-    public override string Apply(string text)
+    public void RemoveObserver(IObserver observer)
     {
-        return Regex.Replace(text, " - ", " — ");
+        customers.Remove(observer);
     }
-}
-
-public class TabulationRule : Rule
-{
-    public override string Apply(string text)
+    public void NotifyObservers()
     {
-        // Заменяем 4 пробела в начале строки на \t
-        text = Regex.Replace(text, @"\n {4}", "\n\t");
-        
-        // Удаляем все другие табы/4 пробела в середине текста
-        text = Regex.Replace(text, @"(\S) {4}", "$1 ");
-        return text;
-    }
-}
-public class PunctuationSpacesRule : Rule
-{
-    public override string Apply(string text)
-    {
-        // Удаляем пробелы ПЕРЕД знаками пунктуации: . , ! ? ) ] } »
-        text = Regex.Replace(text, @"\s+([.,!?)\]»])", "$1");
-        
-        // Удаляем пробелы ПОСЛЕ знаков пунктуации: ( [ { «
-        text = Regex.Replace(text, @"([(\[«{])\s+", "$1");
-        
-        return text;
-    }
-}
-
-// Интерпретатор текста
-public class TextInterpreter
-{
-    private readonly Rule[] _rules;
-
-    public TextInterpreter()
-    {
-        _rules = new Rule[]
+        foreach (IObserver customer in customers)
         {
-            new ExtraBlanksRule(),
-            new TabulationRule(),
-            new ExtraSpacesRule(),
-            new QuotesRule(),
-            new DashRule(),
-            new PunctuationSpacesRule()
-        };
-    }
-
-    public string Interpret(string text)
-    {
-        foreach (var rule in _rules)
-        {
-            text = rule.Apply(text);
+            customer.Update(assortiment);
         }
-        return text;
+    }
+    public void UpdateAssortiment()
+    {
+        assortiment.UpdateAssortiment();
+        NotifyObservers();
     }
 }
 
-
-class Program
+class SaleHunter : IObserver
 {
-    static void Main()
+    public string Name { get; set; }
+    Assortiment previous_assortiment;
+    public SaleHunter(string name)
     {
-        // Чтение из файла
-        string inputPath = "/workspaces/PAPScs/Lab11/input.txt";
-        string outputPath = "/workspaces/PAPScs/Lab11/output.txt";
-
-        if (!File.Exists(inputPath))
+        previous_assortiment = new Assortiment();
+        Name = name;
+    }
+    public void Update(object assortiment)
+    {
+        Assortiment new_assortiment = (Assortiment)assortiment;
+        string response = Name + " says: Today are sales: \n";
+        foreach (var product in new_assortiment.products)
         {
-            Console.WriteLine("Вы не создали текстовый файл. Пожалуйста, создайте файл input.txt и поместите в него Ваш текст.\n");
+            if (product.Value < previous_assortiment.products[product.Key])
+            {
+                int sale = previous_assortiment.products[product.Key] - product.Value;
+                response += "The " + product.Key + " is " + sale.ToString() + " cheaper than yesterday\n";
+            }
         }
-        else{
-        string text = File.ReadAllText(inputPath, Encoding.UTF8);
-        Console.WriteLine($"Сырой текст:\n {text}\n");
-
-        var interpreter = new TextInterpreter();
-        string result = interpreter.Interpret(text);
-
-        File.WriteAllText(outputPath, result, Encoding.UTF8);
-        Console.WriteLine("Исправленный текст:\n");
-        Console.WriteLine(result);
-        Console.WriteLine($"Результат сохранён в {outputPath}");
+        Console.WriteLine(response);
+        foreach (var product in new_assortiment.products)
+        {
+            previous_assortiment.products[product.Key] = product.Value;
         }
+    }
+}
+
+class Student : IObserver
+{
+    public string Name { get; set; }
+    int Budget { get; set; }
+    public Student(string name, int budget)
+    {
+        Name = name;
+        Budget = budget;
+    }
+    public void Update(object assortiment)
+    {
+        Assortiment assort = (Assortiment)assortiment;
+        if (assort.products["bread"] + assort.products["sausages"] + assort.products["eggs"] > Budget)
+        {
+            Console.WriteLine(Name + " says: Today I'm not eating(((\n");
+        }
+        else
+        {
+            Console.WriteLine(Name + " says: Today I'm eating)))\n");
+        }
+    }
+}
+
+class Cook : IObserver
+{
+    public string Name { get; set; }
+
+    public Cook(string name)
+    {
+        Name = name;
+    }
+    public void Update(object assortiment)
+    {
+        Assortiment assort = (Assortiment)assortiment;
+        int cost = 0;
+        cost += assort.products["potato"];
+        cost += assort.products["cabbage"];
+        cost += assort.products["carrot"];
+        cost += assort.products["eggs"];
+        Console.WriteLine(Name + " says: today my products cost " + cost.ToString());
+    }
+}
+
+class Program()
+{
+    static void Main(string[] args)
+    {
+        YandexMarket market = new YandexMarket();
+        Student maks = new Student("Max", 350);
+        Cook bree = new Cook("Bree");
+        SaleHunter katya = new SaleHunter("Katya");
+        market.RegisterObserver(maks);
+        market.RegisterObserver(bree);
+        market.RegisterObserver(katya);
+        market.UpdateAssortiment();
+        market.UpdateAssortiment();
     }
 }
