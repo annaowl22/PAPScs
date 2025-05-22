@@ -68,5 +68,17 @@ namespace Name{
             }
             return value;
         }
+        public void printBoard()
+        {
+            Console.WriteLine("--------------------------");
+            for(int h = 7; h > -1; h--){
+                Console.Write("|");
+                for(int v = 0; v < 8; v++){
+                    Console.Write(" "+grid[v,h].symbol+" |");
+                }
+                Console.White("\n");
+                Console.WriteLine("--------------------------");
+            }
+        }
     }
 }

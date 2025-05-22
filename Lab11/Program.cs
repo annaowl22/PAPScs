@@ -19,7 +19,8 @@ namespace Name
             board.grid[3, 3] = pawn3;
             board.grid[1, 3] = pawn4;
             List<Field> moves = pawn1.getMoves(board);
-        foreach(Field move in moves) {
+            board.printBoard();
+            foreach(Field move in moves) {
                 Console.WriteLine(move.Vertical.ToString() + ' ' + move.Horizontal.ToString() + '\n');
             }
         }
