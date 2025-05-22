@@ -307,4 +307,100 @@ namespace Name
             return getPossibleMoves(board);
         }
     }
+
+    class Knight: Piece
+    {
+        public Knight(PieceColor _color, Field _position) : base(_color, 3, _position, "knight", "N") { }
+
+        public List<Field> getPossibleMoves(ChessBoard board)
+        {
+            List<Field> moves = new List<Field>();
+            Field move = new Field(position.Vertical+1, position.Horizontal+2)
+            if(move.IsValid()){
+                if(board.grid[move.Vertical, move.Horizontal]!=null){
+                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+                        moves.Add(field);
+                    }
+                }else{
+                    moves.Add(field);
+                }
+            }
+            move = new Field(position.Vertical+2, position.Horizontal+1)
+            if(move.IsValid()){
+                if(board.grid[move.Vertical, move.Horizontal]!=null){
+                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+                        moves.Add(field);
+                    }
+                }else{
+                    moves.Add(field);
+                }
+            }
+            move = new Field(position.Vertical-1, position.Horizontal+2)
+            if(move.IsValid()){
+                if(board.grid[move.Vertical, move.Horizontal]!=null){
+                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+                        moves.Add(field);
+                    }
+                }else{
+                    moves.Add(field);
+                }
+            }
+            move = new Field(position.Vertical-2, position.Horizontal+1)
+            if(move.IsValid()){
+                if(board.grid[move.Vertical, move.Horizontal]!=null){
+                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+                        moves.Add(field);
+                    }
+                }else{
+                    moves.Add(field);
+                }
+            }
+            move = new Field(position.Vertical+1, position.Horizontal-2)
+            if(move.IsValid()){
+                if(board.grid[move.Vertical, move.Horizontal]!=null){
+                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+                        moves.Add(field);
+                    }
+                }else{
+                    moves.Add(field);
+                }
+            }
+            move = new Field(position.Vertical+2, position.Horizontal-1)
+            if(move.IsValid()){
+                if(board.grid[move.Vertical, move.Horizontal]!=null){
+                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+                        moves.Add(field);
+                    }
+                }else{
+                    moves.Add(field);
+                }
+            }
+            move = new Field(position.Vertical-1, position.Horizontal-2)
+            if(move.IsValid()){
+                if(board.grid[move.Vertical, move.Horizontal]!=null){
+                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+                        moves.Add(field);
+                    }
+                }else{
+                    moves.Add(field);
+                }
+            }
+            move = new Field(position.Vertical-2, position.Horizontal-1)
+            if(move.IsValid()){
+                if(board.grid[move.Vertical, move.Horizontal]!=null){
+                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+                        moves.Add(field);
+                    }
+                }else{
+                    moves.Add(field);
+                }
+            }
+            return moves;
+        }
+
+        public List<Field> getMoves(ChessBoard board)
+        {
+            return getPossibleMoves(board);
+        }
+    }
 }
