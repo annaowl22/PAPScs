@@ -70,14 +70,21 @@ namespace Name{
         }
         public void printBoard()
         {
-            Console.WriteLine("--------------------------");
+            Console.WriteLine("---------------------------------");
             for(int h = 7; h > -1; h--){
                 Console.Write("|");
                 for(int v = 0; v < 8; v++){
-                    Console.Write(" "+grid[v,h].symbol+" |");
+                    if (grid[v, h] != null)
+                    {
+                        Console.Write(" " + grid[v, h].symbol + " |");
+                    }
+                    else
+                    {
+                        Console.Write("   |");
+                    }
                 }
-                Console.White("\n");
-                Console.WriteLine("--------------------------");
+                Console.Write("\n");
+                Console.WriteLine("---------------------------------");
             }
         }
     }
