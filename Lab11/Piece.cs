@@ -147,58 +147,75 @@ namespace Name
         public List<Field> getPossibleMoves(ChessBoard board)
         {
             List<Field> moves = new List<Field>();
-            for(int i = 1; i < 7; i++){
-                Field field = new Field(position.Vertical, position.Horizontal + i)
-                if(!field.IsValid){
+            for (int i = 1; i < 7; i++)
+            {
+                Field field = new Field(position.Vertical, position.Horizontal + i);
+                if (!field.IsValid())
+                {
                     break;
                 }
-                if(board.grid[field.Vertical, field.Horizontal] != null){
-                    if(board.grid[field.Vertical, field.Horizontal].color != color){
+                if (board.grid[field.Vertical, field.Horizontal] != null)
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
                         moves.Add(field);
                     }
                     break;
                 }
                 moves.Add(field);
             }
-            for(int i = 1; i < 7; i++){
-                Field field = new Field(position.Vertical, position.Horizontal - i)
-                if(!field.IsValid){
+            for (int i = 1; i < 7; i++)
+            {
+                Field field = new Field(position.Vertical, position.Horizontal - i);
+                if (!field.IsValid())
+                {
                     break;
                 }
-                if(board.grid[field.Vertical, field.Horizontal] != null){
-                    if(board.grid[field.Vertical, field.Horizontal].color != color){
+                if (board.grid[field.Vertical, field.Horizontal] != null)
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
                         moves.Add(field);
                     }
                     break;
                 }
                 moves.Add(field);
             }
-            for(int i = 1; i < 7; i++){
-                Field field = new Field(position.Vertical + i, position.Horizontal)
-                if(!field.IsValid){
+            for (int i = 1; i < 7; i++)
+            {
+                Field field = new Field(position.Vertical + i, position.Horizontal);
+                if (!field.IsValid())
+                {
                     break;
                 }
-                if(board.grid[field.Vertical, field.Horizontal] != null){
-                    if(board.grid[field.Vertical, field.Horizontal].color != color){
+                if (board.grid[field.Vertical, field.Horizontal] != null)
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
                         moves.Add(field);
                     }
                     break;
                 }
                 moves.Add(field);
             }
-            for(int i = 1; i < 7; i++){
-                Field field = new Field(position.Vertical - i, position.Horizontal)
-                if(!field.IsValid){
+            for (int i = 1; i < 7; i++)
+            {
+                Field field = new Field(position.Vertical - i, position.Horizontal);
+                if (!field.IsValid())
+                {
                     break;
                 }
-                if(board.grid[field.Vertical, field.Horizontal] != null){
-                    if(board.grid[field.Vertical, field.Horizontal].color != color){
+                if (board.grid[field.Vertical, field.Horizontal] != null)
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
                         moves.Add(field);
                     }
                     break;
                 }
                 moves.Add(field);
             }
+            return moves;
         }
 
         public List<Field> getMoves(ChessBoard board)
