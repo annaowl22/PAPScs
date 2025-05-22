@@ -315,84 +315,84 @@ namespace Name
         public List<Field> getPossibleMoves(ChessBoard board)
         {
             List<Field> moves = new List<Field>();
-            Field move = new Field(position.Vertical+1, position.Horizontal+2)
+            Field move = new Field(position.Vertical + 1, position.Horizontal + 2);
             if(move.IsValid()){
                 if(board.grid[move.Vertical, move.Horizontal]!=null){
                     if(board.grid[move.Vertical, move.Horizontal].color!=color){
-                        moves.Add(field);
+                        moves.Add(move);
                     }
                 }else{
-                    moves.Add(field);
+                    moves.Add(move);
                 }
             }
-            move = new Field(position.Vertical+2, position.Horizontal+1)
+            move = new Field(position.Vertical + 2, position.Horizontal + 1);
             if(move.IsValid()){
                 if(board.grid[move.Vertical, move.Horizontal]!=null){
                     if(board.grid[move.Vertical, move.Horizontal].color!=color){
-                        moves.Add(field);
+                        moves.Add(move);
                     }
                 }else{
-                    moves.Add(field);
+                    moves.Add(move);
                 }
             }
-            move = new Field(position.Vertical-1, position.Horizontal+2)
+            move = new Field(position.Vertical - 1, position.Horizontal + 2);
             if(move.IsValid()){
                 if(board.grid[move.Vertical, move.Horizontal]!=null){
                     if(board.grid[move.Vertical, move.Horizontal].color!=color){
-                        moves.Add(field);
+                        moves.Add(move);
                     }
                 }else{
-                    moves.Add(field);
+                    moves.Add(move);
                 }
             }
-            move = new Field(position.Vertical-2, position.Horizontal+1)
+            move = new Field(position.Vertical - 2, position.Horizontal + 1);
             if(move.IsValid()){
                 if(board.grid[move.Vertical, move.Horizontal]!=null){
                     if(board.grid[move.Vertical, move.Horizontal].color!=color){
-                        moves.Add(field);
+                        moves.Add(move);
                     }
                 }else{
-                    moves.Add(field);
+                    moves.Add(move);
                 }
             }
-            move = new Field(position.Vertical+1, position.Horizontal-2)
+            move = new Field(position.Vertical + 1, position.Horizontal - 2);
             if(move.IsValid()){
                 if(board.grid[move.Vertical, move.Horizontal]!=null){
                     if(board.grid[move.Vertical, move.Horizontal].color!=color){
-                        moves.Add(field);
+                        moves.Add(move);
                     }
                 }else{
-                    moves.Add(field);
+                    moves.Add(move);
                 }
             }
-            move = new Field(position.Vertical+2, position.Horizontal-1)
+            move = new Field(position.Vertical + 2, position.Horizontal - 1);
             if(move.IsValid()){
                 if(board.grid[move.Vertical, move.Horizontal]!=null){
                     if(board.grid[move.Vertical, move.Horizontal].color!=color){
-                        moves.Add(field);
+                        moves.Add(move);
                     }
                 }else{
-                    moves.Add(field);
+                    moves.Add(move);
                 }
             }
-            move = new Field(position.Vertical-1, position.Horizontal-2)
+            move = new Field(position.Vertical - 1, position.Horizontal - 2);
             if(move.IsValid()){
                 if(board.grid[move.Vertical, move.Horizontal]!=null){
                     if(board.grid[move.Vertical, move.Horizontal].color!=color){
-                        moves.Add(field);
+                        moves.Add(move);
                     }
                 }else{
-                    moves.Add(field);
+                    moves.Add(move);
                 }
             }
-            move = new Field(position.Vertical-2, position.Horizontal-1)
+            move = new Field(position.Vertical - 2, position.Horizontal - 1);
             if(move.IsValid()){
                 if(board.grid[move.Vertical, move.Horizontal]!=null){
                     if(board.grid[move.Vertical, move.Horizontal].color!=color){
-                        moves.Add(field);
+                        moves.Add(move);
                     }
                 }else{
-                    moves.Add(field);
+                    moves.Add(move);
                 }
             }
             return moves;
