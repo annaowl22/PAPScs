@@ -139,4 +139,71 @@ namespace Name
             return getPossibleMoves(board);
         }
     }
+
+    class Rook: Piece
+    {
+        public Rook(PieceColor _color, Field _position) : base(_color, 5, _position, "rook", "R") { }
+
+        public List<Field> getPossibleMoves(ChessBoard board)
+        {
+            List<Field> moves = new List<Field>();
+            for(int i = 1; i < 7; i++){
+                Field field = new Field(position.Vertical, position.Horizontal + i)
+                if(!field.IsValid){
+                    break;
+                }
+                if(board.grid[field.Vertical, field.Horizontal] != null){
+                    if(board.grid[field.Vertical, field.Horizontal].color != color){
+                        moves.Add(field);
+                    }
+                    break;
+                }
+                moves.Add(field);
+            }
+            for(int i = 1; i < 7; i++){
+                Field field = new Field(position.Vertical, position.Horizontal - i)
+                if(!field.IsValid){
+                    break;
+                }
+                if(board.grid[field.Vertical, field.Horizontal] != null){
+                    if(board.grid[field.Vertical, field.Horizontal].color != color){
+                        moves.Add(field);
+                    }
+                    break;
+                }
+                moves.Add(field);
+            }
+            for(int i = 1; i < 7; i++){
+                Field field = new Field(position.Vertical + i, position.Horizontal)
+                if(!field.IsValid){
+                    break;
+                }
+                if(board.grid[field.Vertical, field.Horizontal] != null){
+                    if(board.grid[field.Vertical, field.Horizontal].color != color){
+                        moves.Add(field);
+                    }
+                    break;
+                }
+                moves.Add(field);
+            }
+            for(int i = 1; i < 7; i++){
+                Field field = new Field(position.Vertical - i, position.Horizontal)
+                if(!field.IsValid){
+                    break;
+                }
+                if(board.grid[field.Vertical, field.Horizontal] != null){
+                    if(board.grid[field.Vertical, field.Horizontal].color != color){
+                        moves.Add(field);
+                    }
+                    break;
+                }
+                moves.Add(field);
+            }
+        }
+
+        public List<Field> getMoves(ChessBoard board)
+        {
+            return getPossibleMoves(board);
+        }
+    }
 }
