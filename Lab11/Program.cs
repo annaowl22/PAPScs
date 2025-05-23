@@ -11,6 +11,7 @@ namespace Name
         {
             ChessStartingPosition setup = new ChessStartingPosition();
             ChessBoard board = setup.makeChessBoard();
+            board.makeMove(new Field(0, 1), new Field(0, 3));
             board.printBoard();
 
         }

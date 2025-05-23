@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 namespace Name
 {
     public enum PieceColor { White, Black }
+
     interface Unit
     {
         int getValue();
@@ -23,24 +24,26 @@ namespace Name
         {
             return (Vertical < 8 && Vertical >= 0 && Horizontal < 8 && Horizontal >= 0);
         }
-    }
+        public bool isEqual(Field a)
+        {
+            return a.Vertical == Vertical && a.Horizontal == Horizontal;
+        }
 
-    public bool areFieldsEqual(Field a, Field b)
-    {
-        return a.Vertical == b.Vertical && a.Horizontal == b.Horizontal;
-    }
-
-    public bool isFieldIn(List<Field> list, Field field)
+        public bool isIn(List<Field> list)
     {
         foreach(Field f in list)
         {
-            if(areFieldsEqual(f, field))
+            if(isEqual(f))
             {
                 return true;
             }
         }
         return false;
     }
+
+    }
+
+
 
     class Piece : Unit
     {
@@ -61,11 +64,11 @@ namespace Name
             hasMoved = false;
         }
 
-        public virtual List<Field> getPossibleMoves(List<Piece> pieces)
+        public virtual List<Field> getPossibleMoves(ChessBoard board)
         {
             return new List<Field>();
         }
-        public virtual List<Field> getMoves(List<Piece> pieces)
+        public virtual List<Field> getMoves(ChessBoard board)
         {
             return new List<Field>();
         }
@@ -80,7 +83,7 @@ namespace Name
     {
         public Pawn(PieceColor _color, Field _position) : base(_color, 1, _position, "pawn", "p") { }
 
-        public List<Field> getPossibleMoves(ChessBoard board)
+        public override List<Field> getPossibleMoves(ChessBoard board)
         {
             List<Field> moves = new List<Field>();
             if (color == PieceColor.White)
@@ -152,7 +155,7 @@ namespace Name
             return moves;
         }
 
-        public List<Field> getMoves(ChessBoard board)
+        public override List<Field> getMoves(ChessBoard board)
         {
             return getPossibleMoves(board);
         }
@@ -162,7 +165,7 @@ namespace Name
     {
         public Rook(PieceColor _color, Field _position) : base(_color, 5, _position, "rook", "R") { }
 
-        public List<Field> getPossibleMoves(ChessBoard board)
+        public override List<Field> getPossibleMoves(ChessBoard board)
         {
             List<Field> moves = new List<Field>();
             for (int i = 1; i < 7; i++)
@@ -236,7 +239,7 @@ namespace Name
             return moves;
         }
 
-        public List<Field> getMoves(ChessBoard board)
+        public override List<Field> getMoves(ChessBoard board)
         {
             return getPossibleMoves(board);
         }
@@ -246,7 +249,7 @@ namespace Name
     {
         public Bishop(PieceColor _color, Field _position) : base(_color, 3, _position, "bishop", "B") { }
 
-        public List<Field> getPossibleMoves(ChessBoard board)
+        public override List<Field> getPossibleMoves(ChessBoard board)
         {
             List<Field> moves = new List<Field>();
             for (int i = 1; i < 7; i++)
@@ -320,7 +323,7 @@ namespace Name
             return moves;
         }
 
-        public List<Field> getMoves(ChessBoard board)
+        public override List<Field> getMoves(ChessBoard board)
         {
             return getPossibleMoves(board);
         }
@@ -330,7 +333,7 @@ namespace Name
     {
         public Knight(PieceColor _color, Field _position) : base(_color, 3, _position, "knight", "N") { }
 
-        public List<Field> getPossibleMoves(ChessBoard board)
+        public override List<Field> getPossibleMoves(ChessBoard board)
         {
             List<Field> moves = new List<Field>();
             Field move = new Field(position.Vertical + 1, position.Horizontal + 2);
@@ -456,7 +459,7 @@ namespace Name
             return moves;
         }
 
-        public List<Field> getMoves(ChessBoard board)
+        public override List<Field> getMoves(ChessBoard board)
         {
             return getPossibleMoves(board);
         }
@@ -466,7 +469,7 @@ namespace Name
     {
         public Queen(PieceColor _color, Field _position) : base(_color, 10, _position, "queen", "Q") { }
 
-        public List<Field> getPossibleMoves(ChessBoard board)
+        public override List<Field> getPossibleMoves(ChessBoard board)
         {
             List<Field> moves = new List<Field>();
             for (int i = 1; i < 7; i++)
@@ -607,7 +610,7 @@ namespace Name
             }
             return moves;
         }
-        public List<Field> getMoves(ChessBoard board)
+        public override List<Field> getMoves(ChessBoard board)
         {
             return getPossibleMoves(board);
         }
@@ -617,7 +620,7 @@ namespace Name
     {
         public King(PieceColor _color, Field _position) : base(_color, 0, _position, "king", "K") { }
 
-        public List<Field> getPossibleMoves(ChessBoard board)
+        public override List<Field> getPossibleMoves(ChessBoard board)
         {
             List<Field> moves = new List<Field>();
             Field field = new Field(position.Vertical, position.Horizontal + 1);
@@ -743,7 +746,7 @@ namespace Name
             return moves;
             
         }
-        public List<Field> getMoves(ChessBoard board)
+        public override List<Field> getMoves(ChessBoard board)
         {
             return getPossibleMoves(board);
         }

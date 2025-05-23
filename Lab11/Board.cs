@@ -8,11 +8,11 @@ namespace Name{
 
     class ChessBoard : Unit
     {
-        public Piece[,] grid;
+        public Piece?[,] grid;
 
         public ChessBoard()
         {
-            grid = new Piece[8, 8];
+            grid = new Piece?[8, 8];
         }
 
         public List<Piece> getWhitePieces()
@@ -98,21 +98,27 @@ namespace Name{
                 Console.WriteLine("---------------------------------");
             }
         }
+        private void removePiece(Field field)
+        {
+            grid[field.Vertical, field.Horizontal] = null;
+        }
 
         public bool makeMove(Field a, Field b)
         {
-            if(grid[a.Vertical, a.Horizontal]==null)
+            if (grid[a.Vertical, a.Horizontal] == null)
             {
                 return false;
             }
             Piece piece = grid[a.Vertical, a.Horizontal];
             List<Field> moves = piece.getMoves(this);
-            if(!isFieldIn(moves, b)){
+            if (!b.isIn(moves))
+            {
                 Console.WriteLine("Невозможный ход!");
                 return false;
             }
+            piece.position = b;
             grid[b.Vertical, b.Horizontal] = piece;
-            grid[a.Vertical, a.Horizontal] = null;
+            removePiece(a);
             return true;
         }
     }
