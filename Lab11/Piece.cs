@@ -25,6 +25,23 @@ namespace Name
         }
     }
 
+    public bool areFieldsEqual(Field a, Field b)
+    {
+        return a.Vertical == b.Vertical && a.Horizontal == b.Horizontal;
+    }
+
+    public bool isFieldIn(List<Field> list, Field field)
+    {
+        foreach(Field f in list)
+        {
+            if(areFieldsEqual(f, field))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     class Piece : Unit
     {
         public PieceColor color;

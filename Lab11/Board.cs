@@ -98,5 +98,22 @@ namespace Name{
                 Console.WriteLine("---------------------------------");
             }
         }
+
+        public bool makeMove(Field a, Field b)
+        {
+            if(grid[a.Vertical, a.Horizontal]==null)
+            {
+                return false;
+            }
+            Piece piece = grid[a.Vertical, a.Horizontal];
+            List<Field> moves = piece.getMoves(this);
+            if(!isFieldIn(moves, b)){
+                Console.WriteLine("Невозможный ход!");
+                return false;
+            }
+            grid[b.Vertical, b.Horizontal] = piece;
+            grid[a.Vertical, a.Horizontal] = null;
+            return true;
+        }
     }
 }
