@@ -84,6 +84,7 @@ namespace Name{
                         {
                             Console.Write(" ");
                             Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write(grid[v, h].symbol);
                             Console.ResetColor();
                             Console.Write(" |");
                         }
