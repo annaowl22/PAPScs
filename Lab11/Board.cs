@@ -107,6 +107,7 @@ namespace Name{
         {
             if (grid[a.Vertical, a.Horizontal] == null)
             {
+                Console.WriteLine("Нет фигуры!");
                 return false;
             }
             Piece piece = grid[a.Vertical, a.Horizontal];
