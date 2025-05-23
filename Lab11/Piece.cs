@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 namespace Name
 {
     public enum PieceColor { White, Black }
@@ -140,7 +141,7 @@ namespace Name
         }
     }
 
-    class Rook: Piece
+    class Rook : Piece
     {
         public Rook(PieceColor _color, Field _position) : base(_color, 5, _position, "rook", "R") { }
 
@@ -224,7 +225,7 @@ namespace Name
         }
     }
 
-    class Bishop: Piece
+    class Bishop : Piece
     {
         public Bishop(PieceColor _color, Field _position) : base(_color, 3, _position, "bishop", "B") { }
 
@@ -308,7 +309,7 @@ namespace Name
         }
     }
 
-    class Knight: Piece
+    class Knight : Piece
     {
         public Knight(PieceColor _color, Field _position) : base(_color, 3, _position, "knight", "N") { }
 
@@ -316,88 +317,415 @@ namespace Name
         {
             List<Field> moves = new List<Field>();
             Field move = new Field(position.Vertical + 1, position.Horizontal + 2);
-            if(move.IsValid()){
-                if(board.grid[move.Vertical, move.Horizontal]!=null){
-                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+            if (move.IsValid())
+            {
+                if (board.grid[move.Vertical, move.Horizontal] != null)
+                {
+                    if (board.grid[move.Vertical, move.Horizontal].color != color)
+                    {
                         moves.Add(move);
                     }
-                }else{
+                }
+                else
+                {
                     moves.Add(move);
                 }
             }
             move = new Field(position.Vertical + 2, position.Horizontal + 1);
-            if(move.IsValid()){
-                if(board.grid[move.Vertical, move.Horizontal]!=null){
-                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+            if (move.IsValid())
+            {
+                if (board.grid[move.Vertical, move.Horizontal] != null)
+                {
+                    if (board.grid[move.Vertical, move.Horizontal].color != color)
+                    {
                         moves.Add(move);
                     }
-                }else{
+                }
+                else
+                {
                     moves.Add(move);
                 }
             }
             move = new Field(position.Vertical - 1, position.Horizontal + 2);
-            if(move.IsValid()){
-                if(board.grid[move.Vertical, move.Horizontal]!=null){
-                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+            if (move.IsValid())
+            {
+                if (board.grid[move.Vertical, move.Horizontal] != null)
+                {
+                    if (board.grid[move.Vertical, move.Horizontal].color != color)
+                    {
                         moves.Add(move);
                     }
-                }else{
+                }
+                else
+                {
                     moves.Add(move);
                 }
             }
             move = new Field(position.Vertical - 2, position.Horizontal + 1);
-            if(move.IsValid()){
-                if(board.grid[move.Vertical, move.Horizontal]!=null){
-                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+            if (move.IsValid())
+            {
+                if (board.grid[move.Vertical, move.Horizontal] != null)
+                {
+                    if (board.grid[move.Vertical, move.Horizontal].color != color)
+                    {
                         moves.Add(move);
                     }
-                }else{
+                }
+                else
+                {
                     moves.Add(move);
                 }
             }
             move = new Field(position.Vertical + 1, position.Horizontal - 2);
-            if(move.IsValid()){
-                if(board.grid[move.Vertical, move.Horizontal]!=null){
-                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+            if (move.IsValid())
+            {
+                if (board.grid[move.Vertical, move.Horizontal] != null)
+                {
+                    if (board.grid[move.Vertical, move.Horizontal].color != color)
+                    {
                         moves.Add(move);
                     }
-                }else{
+                }
+                else
+                {
                     moves.Add(move);
                 }
             }
             move = new Field(position.Vertical + 2, position.Horizontal - 1);
-            if(move.IsValid()){
-                if(board.grid[move.Vertical, move.Horizontal]!=null){
-                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+            if (move.IsValid())
+            {
+                if (board.grid[move.Vertical, move.Horizontal] != null)
+                {
+                    if (board.grid[move.Vertical, move.Horizontal].color != color)
+                    {
                         moves.Add(move);
                     }
-                }else{
+                }
+                else
+                {
                     moves.Add(move);
                 }
             }
             move = new Field(position.Vertical - 1, position.Horizontal - 2);
-            if(move.IsValid()){
-                if(board.grid[move.Vertical, move.Horizontal]!=null){
-                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+            if (move.IsValid())
+            {
+                if (board.grid[move.Vertical, move.Horizontal] != null)
+                {
+                    if (board.grid[move.Vertical, move.Horizontal].color != color)
+                    {
                         moves.Add(move);
                     }
-                }else{
+                }
+                else
+                {
                     moves.Add(move);
                 }
             }
             move = new Field(position.Vertical - 2, position.Horizontal - 1);
-            if(move.IsValid()){
-                if(board.grid[move.Vertical, move.Horizontal]!=null){
-                    if(board.grid[move.Vertical, move.Horizontal].color!=color){
+            if (move.IsValid())
+            {
+                if (board.grid[move.Vertical, move.Horizontal] != null)
+                {
+                    if (board.grid[move.Vertical, move.Horizontal].color != color)
+                    {
                         moves.Add(move);
                     }
-                }else{
+                }
+                else
+                {
                     moves.Add(move);
                 }
             }
             return moves;
         }
 
+        public List<Field> getMoves(ChessBoard board)
+        {
+            return getPossibleMoves(board);
+        }
+    }
+
+    class Queen : Piece
+    {
+        public Queen(PieceColor _color, Field _position) : base(_color, 10, _position, "queen", "Q") { }
+
+        public List<Field> getPossibleMoves(ChessBoard board)
+        {
+            List<Field> moves = new List<Field>();
+            for (int i = 1; i < 7; i++)
+            {
+                Field field = new Field(position.Vertical + i, position.Horizontal + i);
+                if (!field.IsValid())
+                {
+                    break;
+                }
+                if (board.grid[field.Vertical, field.Horizontal] != null)
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                    break;
+                }
+                moves.Add(field);
+            }
+            for (int i = 1; i < 7; i++)
+            {
+                Field field = new Field(position.Vertical + i, position.Horizontal - i);
+                if (!field.IsValid())
+                {
+                    break;
+                }
+                if (board.grid[field.Vertical, field.Horizontal] != null)
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                    break;
+                }
+                moves.Add(field);
+            }
+            for (int i = 1; i < 7; i++)
+            {
+                Field field = new Field(position.Vertical - i, position.Horizontal + i);
+                if (!field.IsValid())
+                {
+                    break;
+                }
+                if (board.grid[field.Vertical, field.Horizontal] != null)
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                    break;
+                }
+                moves.Add(field);
+            }
+            for (int i = 1; i < 7; i++)
+            {
+                Field field = new Field(position.Vertical - i, position.Horizontal - i);
+                if (!field.IsValid())
+                {
+                    break;
+                }
+                if (board.grid[field.Vertical, field.Horizontal] != null)
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                    break;
+                }
+                moves.Add(field);
+            }
+            for (int i = 1; i < 7; i++)
+            {
+                Field field = new Field(position.Vertical, position.Horizontal + i);
+                if (!field.IsValid())
+                {
+                    break;
+                }
+                if (board.grid[field.Vertical, field.Horizontal] != null)
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                    break;
+                }
+                moves.Add(field);
+            }
+            for (int i = 1; i < 7; i++)
+            {
+                Field field = new Field(position.Vertical, position.Horizontal - i);
+                if (!field.IsValid())
+                {
+                    break;
+                }
+                if (board.grid[field.Vertical, field.Horizontal] != null)
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                    break;
+                }
+                moves.Add(field);
+            }
+            for (int i = 1; i < 7; i++)
+            {
+                Field field = new Field(position.Vertical + i, position.Horizontal);
+                if (!field.IsValid())
+                {
+                    break;
+                }
+                if (board.grid[field.Vertical, field.Horizontal] != null)
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                    break;
+                }
+                moves.Add(field);
+            }
+            for (int i = 1; i < 7; i++)
+            {
+                Field field = new Field(position.Vertical - i, position.Horizontal);
+                if (!field.IsValid())
+                {
+                    break;
+                }
+                if (board.grid[field.Vertical, field.Horizontal] != null)
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                    break;
+                }
+                moves.Add(field);
+            }
+            return moves;
+        }
+        public List<Field> getMoves(ChessBoard board)
+        {
+            return getPossibleMoves(board);
+        }
+    }
+
+    class King : Piece
+    {
+        public King(PieceColor _color, Field _position) : base(_color, 0, _position, "king", "K") { }
+
+        public List<Field> getPossibleMoves(ChessBoard board)
+        {
+            List<Field> moves = new List<Field>();
+            Field field = new Field(position.Vertical, position.Horizontal + 1);
+            if (field.IsValid())
+            {
+                if (board.grid[field.Vertical, field.Horizontal] == null)
+                {
+                    moves.Add(field);
+                }
+                else
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                }
+            }
+            field = new Field(position.Vertical + 1, position.Horizontal + 1);
+            if (field.IsValid())
+            {
+                if (board.grid[field.Vertical, field.Horizontal] == null)
+                {
+                    moves.Add(field);
+                }
+                else
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                }
+            }
+            field = new Field(position.Vertical + 1, position.Horizontal);
+            if (field.IsValid())
+            {
+                if (board.grid[field.Vertical, field.Horizontal] == null)
+                {
+                    moves.Add(field);
+                }
+                else
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                }
+            }
+            field = new Field(position.Vertical + 1, position.Horizontal - 1);
+            if (field.IsValid())
+            {
+                if (board.grid[field.Vertical, field.Horizontal] == null)
+                {
+                    moves.Add(field);
+                }
+                else
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                }
+            }
+            field = new Field(position.Vertical, position.Horizontal - 1);
+            if (field.IsValid())
+            {
+                if (board.grid[field.Vertical, field.Horizontal] == null)
+                {
+                    moves.Add(field);
+                }
+                else
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                }
+            }
+            field = new Field(position.Vertical - 1, position.Horizontal - 1);
+            if (field.IsValid())
+            {
+                if (board.grid[field.Vertical, field.Horizontal] == null)
+                {
+                    moves.Add(field);
+                }
+                else
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                }
+            }
+            field = new Field(position.Vertical - 1, position.Horizontal);
+            if (field.IsValid())
+            {
+                if (board.grid[field.Vertical, field.Horizontal] == null)
+                {
+                    moves.Add(field);
+                }
+                else
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                }
+            }
+            field = new Field(position.Vertical - 1, position.Horizontal + 1);
+            if (field.IsValid())
+            {
+                if (board.grid[field.Vertical, field.Horizontal] == null)
+                {
+                    moves.Add(field);
+                }
+                else
+                {
+                    if (board.grid[field.Vertical, field.Horizontal].color != color)
+                    {
+                        moves.Add(field);
+                    }
+                }
+            }
+            return moves;
+            
+        }
         public List<Field> getMoves(ChessBoard board)
         {
             return getPossibleMoves(board);
