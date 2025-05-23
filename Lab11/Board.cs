@@ -76,7 +76,17 @@ namespace Name{
                 for(int v = 0; v < 8; v++){
                     if (grid[v, h] != null)
                     {
-                        Console.Write(" " + grid[v, h].symbol + " |");
+                        if(grid[v, h].color == PieceColor.White)
+                        {
+                            Console.Write(" " + grid[v, h].symbol + " |");
+                        }
+                        else
+                        {
+                            Console.Write(" ");
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.ResetColor();
+                            Console.Write(" |");
+                        }
                     }
                     else
                     {
