@@ -70,16 +70,13 @@ namespace Name
         }
         public List<Field> getMoves(ChessBoard board)
         {
-            List<Field> no_check_moves = new List<Field>();
-            List<Field> moves = getPossibleMoves(board);
-            foreach(Field move in moves){
-                ChessBoard new_board = board;
-                new_board.makeMove(position, move);
-                if(!new_board.isCheck(color)){
-                    no_check_moves.Add(move);
-                }
-            }
-            return no_check_moves;
+            return getPossibleMoves(board);
+        }
+        public Piece Copy()
+        {
+            Piece copy = (Piece)this.MemberwiseClone(); // Поверхностное копирование
+            copy.position = new Field(position.Vertical, position.Horizontal); // Копируем позицию
+            return copy;
         }
 
         public int getValue()
@@ -603,7 +600,7 @@ namespace Name
 
     class King : Piece
     {
-        public King(PieceColor _color, Field _position) : base(_color, 0, _position, "king", "K") { }
+        public King(PieceColor _color, Field _position) : base(_color, 1000, _position, "king", "K") { }
 
         public override List<Field> getPossibleMoves(ChessBoard board)
         {

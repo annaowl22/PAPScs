@@ -18,30 +18,40 @@ namespace Name{
         public Piece getKing(PieceColor color)
         {
             List<Piece> my_pieces;
-            if(color==PieceColor.Black){
+            if (color == PieceColor.Black)
+            {
                 my_pieces = getBlackPieces();
-            }else{
+            }
+            else
+            {
                 my_pieces = getWhitePieces();
             }
-            foreach(Piece piece in my_pieces){
-                if(piece.name == 'king'){
+            foreach (Piece piece in my_pieces)
+            {
+                if (piece.name == "king")
+                {
                     return piece;
                 }
             }
-            return Pawn(PieceColor.White, new Field(0,0));
+            return new Pawn(PieceColor.White, new Field(0, 0));
         }
 
         public bool isCheck(PieceColor color)
         {
             Piece king = getKing(color);
             List<Piece> enemies;
-            if(color==PieceColor.White){
+            if (color == PieceColor.White)
+            {
                 enemies = getBlackPieces();
-            }else{
+            }
+            else
+            {
                 enemies = getWhitePieces();
             }
-            foreach(Piece enemy in enemies){
-                if(king.position.isIn(enemy.getPossibleMoves(this))){
+            foreach (Piece enemy in enemies)
+            {
+                if (king.position.isIn(enemy.getPossibleMoves(this)))
+                {
                     return true;
                 }
             }
@@ -104,12 +114,14 @@ namespace Name{
         public void printBoard()
         {
             Console.WriteLine("---------------------------------");
-            for(int h = 7; h > -1; h--){
+            for (int h = 7; h > -1; h--)
+            {
                 Console.Write("|");
-                for(int v = 0; v < 8; v++){
+                for (int v = 0; v < 8; v++)
+                {
                     if (grid[v, h] != null)
                     {
-                        if(grid[v, h].color == PieceColor.White)
+                        if (grid[v, h].color == PieceColor.White)
                         {
                             Console.Write(" " + grid[v, h].symbol + " |");
                         }
@@ -151,9 +163,31 @@ namespace Name{
                 return false;
             }
             piece.position = b;
+            ChessBoard new_board = DeepCopy();
+            new_board.grid[b.Vertical, b.Horizontal] = piece;
+            new_board.removePiece(a);
+            if(new_board.isCheck(piece.color)){
+                Console.WriteLine("Собственный король не должен оказаться под шахом");
+                return false;
+            }
             grid[b.Vertical, b.Horizontal] = piece;
             removePiece(a);
             return true;
+        }
+        public ChessBoard DeepCopy()
+        {
+            ChessBoard copy = new ChessBoard();
+            for (int y = 0; y < 8; y++)
+            {
+                for (int x = 0; x < 8; x++)
+                {
+                    if (grid[x, y] != null)
+                    {
+                        copy.grid[x, y] = grid[x, y].Copy(); // Копируем фигуру
+                    }
+                }
+            }
+            return copy;
         }
     }
 }
