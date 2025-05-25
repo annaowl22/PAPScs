@@ -725,6 +725,39 @@ namespace Name
                     }
                 }
             }
+            if (!hasMoved && ((position.isEqual(new Field(4, 0)) && color == PieceColor.White) ||
+                                (position.isEqual(new Field(4, 7)) && color == PieceColor.Black)))
+            {
+                if (board.grid[5, position.Horizontal] == null && board.grid[6, position.Horizontal] == null &&
+                board.grid[position.Vertical + 3, position.Horizontal] != null)
+                {
+                    if (board.grid[7, position.Horizontal].name == "rook" &&
+                    board.grid[7, position.Horizontal].color == color &&
+                     !board.grid[7, position.Horizontal].hasMoved)
+                    {
+                        moves.Add(new Field(6, position.Horizontal));
+                    }
+                }
+                if (board.grid[3, position.Horizontal] == null && board.grid[2, position.Horizontal] == null &&
+                board.grid[1, position.Horizontal] == null && board.grid[0, position.Horizontal] != null)
+                {
+                    if (board.grid[0, position.Horizontal].name == "rook" &&
+                        board.grid[0, position.Horizontal].color == color &&
+                     !board.grid[0, position.Horizontal].hasMoved)
+                    {
+                        moves.Add(new Field(position.Vertical - 2, position.Horizontal));
+                    }
+                }
+            }
+            else if (hasMoved)
+            {
+                Console.WriteLine("Король ходил");
+            }
+            else
+            {
+                Console.WriteLine("Король не на стартовой позиции");
+                Console.WriteLine(position.Vertical.ToString() + ' ' + position.Horizontal.ToString());
+            }
             return moves;
             
         }

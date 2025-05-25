@@ -11,15 +11,19 @@ namespace Name
         {
             ChessStartingPosition setup = new ChessStartingPosition();
             ChessBoard board = setup.makeChessBoard();
+            board.printBoard();
             MoveReader reader = new MoveReader();
             List<Field> move = reader.read();
-            board.makeMove(move[0], move[1]);
+            board.makeUserMove(move[0], move[1]);
             board.printBoard();
             move = reader.read();
-            board.makeMove(move[0], move[1]);
+            board.makeUserMove(move[0], move[1]);
             board.printBoard();
             move = reader.read();
-            board.makeMove(move[0],move[1]);
+            board.makeUserMove(move[0], move[1]);
+            board.printBoard();
+            move = reader.read();
+            board.makeUserMove(move[0],move[1]);
             board.printBoard();
         }
     }

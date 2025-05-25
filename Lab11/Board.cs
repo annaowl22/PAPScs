@@ -113,12 +113,14 @@ namespace Name{
         }
         public void printBoard()
         {
-            Console.WriteLine("---------------------------------");
+            Console.WriteLine("  ---------------------------------");
             for (int h = 7; h > -1; h--)
             {
-                Console.Write("|");
+                Console.Write(h + 1);
+                Console.Write(" |");
                 for (int v = 0; v < 8; v++)
                 {
+
                     if (grid[v, h] != null)
                     {
                         if (grid[v, h].color == PieceColor.White)
@@ -140,15 +142,16 @@ namespace Name{
                     }
                 }
                 Console.Write("\n");
-                Console.WriteLine("---------------------------------");
+                Console.WriteLine("  ---------------------------------");
             }
+            Console.WriteLine("    a   b   c   d   e   f   g   h");
         }
         private void removePiece(Field field)
         {
             grid[field.Vertical, field.Horizontal] = null;
         }
 
-        public bool makeMove(Field a, Field b)
+        public bool makeUserMove(Field a, Field b)
         {
             if (grid[a.Vertical, a.Horizontal] == null)
             {
@@ -170,8 +173,59 @@ namespace Name{
                 Console.WriteLine("Собственный король не должен оказаться под шахом");
                 return false;
             }
+            piece.hasMoved = true;
             grid[b.Vertical, b.Horizontal] = piece;
             removePiece(a);
+            if (piece.name == "king")
+            {
+                if (b.Vertical - a.Vertical == 2)
+                {
+                    grid[5, a.Horizontal] = grid[7, a.Horizontal].Copy();
+                    removePiece(new Field(7, a.Horizontal));
+                }
+                if (b.Vertical - a.Vertical == -3)
+                {
+                    grid[3, a.Horizontal] = grid[0, a.Horizontal].Copy();
+                    removePiece(new Field(3, a.Horizontal));
+                }
+            }
+            return true;
+        }
+        public bool makeMove(Field a, Field b)
+        {
+            if (grid[a.Vertical, a.Horizontal] == null)
+            {
+                return false;
+            }
+            Piece piece = grid[a.Vertical, a.Horizontal];
+            List<Field> moves = piece.getMoves(this);
+            if (!b.isIn(moves))
+            {
+                return false;
+            }
+            piece.position = b;
+            ChessBoard new_board = DeepCopy();
+            new_board.grid[b.Vertical, b.Horizontal] = piece;
+            new_board.removePiece(a);
+            if(new_board.isCheck(piece.color)){
+                return false;
+            }
+            piece.hasMoved = true;
+            grid[b.Vertical, b.Horizontal] = piece;
+            removePiece(a);
+            if (piece.name == "king")
+            {
+                if (b.Vertical - a.Vertical == 2)
+                {
+                    grid[5, a.Horizontal] = grid[7, a.Horizontal].Copy();
+                    removePiece(new Field(7, a.Horizontal));
+                }
+                if (b.Vertical - a.Vertical == -3)
+                {
+                    grid[3, a.Horizontal] = grid[0, a.Horizontal].Copy();
+                    removePiece(new Field(3, a.Horizontal));
+                }
+            }
             return true;
         }
         public ChessBoard DeepCopy()
