@@ -68,9 +68,18 @@ namespace Name
         {
             return new List<Field>();
         }
-        public virtual List<Field> getMoves(ChessBoard board)
+        public List<Field> getMoves(ChessBoard board)
         {
-            return new List<Field>();
+            List<Field> no_check_moves = new List<Field>();
+            List<Field> moves = getPossibleMoves(board);
+            foreach(Field move in moves){
+                ChessBoard new_board = board;
+                new_board.makeMove(position, move);
+                if(!new_board.isCheck(color)){
+                    no_check_moves.Add(move);
+                }
+            }
+            return no_check_moves;
         }
 
         public int getValue()
@@ -154,11 +163,6 @@ namespace Name
             }
             return moves;
         }
-
-        public override List<Field> getMoves(ChessBoard board)
-        {
-            return getPossibleMoves(board);
-        }
     }
 
     class Rook : Piece
@@ -238,11 +242,6 @@ namespace Name
             }
             return moves;
         }
-
-        public override List<Field> getMoves(ChessBoard board)
-        {
-            return getPossibleMoves(board);
-        }
     }
 
     class Bishop : Piece
@@ -321,11 +320,6 @@ namespace Name
                 moves.Add(field);
             }
             return moves;
-        }
-
-        public override List<Field> getMoves(ChessBoard board)
-        {
-            return getPossibleMoves(board);
         }
     }
 
@@ -457,11 +451,6 @@ namespace Name
                 }
             }
             return moves;
-        }
-
-        public override List<Field> getMoves(ChessBoard board)
-        {
-            return getPossibleMoves(board);
         }
     }
 
@@ -610,10 +599,6 @@ namespace Name
             }
             return moves;
         }
-        public override List<Field> getMoves(ChessBoard board)
-        {
-            return getPossibleMoves(board);
-        }
     }
 
     class King : Piece
@@ -745,10 +730,6 @@ namespace Name
             }
             return moves;
             
-        }
-        public override List<Field> getMoves(ChessBoard board)
-        {
-            return getPossibleMoves(board);
         }
     }
 }

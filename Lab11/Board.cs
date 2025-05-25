@@ -15,6 +15,39 @@ namespace Name{
             grid = new Piece?[8, 8];
         }
 
+        public Piece getKing(PieceColor color)
+        {
+            List<Piece> my_pieces;
+            if(color==PieceColor.Black){
+                my_pieces = getBlackPieces();
+            }else{
+                my_pieces = getWhitePieces();
+            }
+            foreach(Piece piece in my_pieces){
+                if(piece.name == 'king'){
+                    return piece;
+                }
+            }
+            return Pawn(PieceColor.White, new Field(0,0));
+        }
+
+        public bool isCheck(PieceColor color)
+        {
+            Piece king = getKing(color);
+            List<Piece> enemies;
+            if(color==PieceColor.White){
+                enemies = getBlackPieces();
+            }else{
+                enemies = getWhitePieces();
+            }
+            foreach(Piece enemy in enemies){
+                if(king.position.isIn(enemy.getPossibleMoves(this))){
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public List<Piece> getWhitePieces()
         {
             List<Piece> white_pieces = new List<Piece>();
