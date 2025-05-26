@@ -188,6 +188,12 @@ namespace Name{
                     grid[3, a.Horizontal] = grid[0, a.Horizontal].Copy();
                     removePiece(new Field(3, a.Horizontal));
                 }
+            }else if(piece.name == "pawn")
+            {
+                if(piece.color==PieceColor.White && b.Horizontal==7 || piece.color==PieceColor.Black && b.Horizontal==0)
+                {
+                    grid[b.Vertical, b.Horizontal] = MoveReader.pawnTurn(piece.color, b);
+                }
             }
             return true;
         }
