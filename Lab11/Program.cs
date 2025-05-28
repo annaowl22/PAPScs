@@ -9,7 +9,7 @@ namespace Name
     {
         static void Main(string[] args)
         {
-            ChessStartingPosition setup = new ChessStartingPosition();
+            ChessSetup setup = new ChessPawnTurnPosition();
             ChessBoard board = setup.makeChessBoard();
             board.printBoard();
             MoveReader reader = new MoveReader();
@@ -32,6 +32,14 @@ namespace Name
             board.printBoard();
             move = MoveReader.read();
             board.makeUserMove(move[0],move[1]);
+            if (board.isCheckMate(PieceColor.Black))
+            {
+                Console.WriteLine("Mate");
+            }
+            else
+            {
+                Console.WriteLine("The show must go on");
+            }
             board.printBoard();
         }
     }

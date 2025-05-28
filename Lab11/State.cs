@@ -38,18 +38,54 @@ namespace Name
                     {
                         Console.WriteLine("Шах Королю белых!");
                     }
-                    // if(board.isCheckMate(PieceColor.White))
-                    // {
-                    //     Console.WriteLine("Мат Королю белых!");
-                    //     return false;
-                    // }
+                    if (board.isCheckMate(PieceColor.White))
+                    {
+                        Console.WriteLine("Мат Королю белых!");
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        }
+    }
+    class WhiteTurnState : State
+    {
+        public bool HandleMove(ChessBoard board)
+        {
+            List<Field> move;
+            bool success = false;
+            while (true)
+            {
+                move = MoveReader.read();
+                if (board.grid[move[0].Vertical, move[0].Horizontal] != null)
+                {
+                    if (board.grid[move[0].Vertical, move[0].Horizontal].color == PieceColor.White)
+                    {
+                        success = board.makeUserMove(move[0], move[1]);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Нельзя ходить фигурами противника");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Фигура на поле отсутствует");
+                }
+                if (success)
+                {
+                    if (board.isCheck(PieceColor.Black))
+                    {
+                        Console.WriteLine("Шах Королю чёрных!");
+                    }
+                    if (board.isCheckMate(PieceColor.Black))
+                    {
+                        Console.WriteLine("Мат Королю чёрных!");
+                        return false;
+                    }
                     return true;
                 }
             }
         }
     }
 }
-    // class WhiteTurnState: State
-    // {
-
-    // }
