@@ -5,12 +5,18 @@ namespace Name
 {
     interface State
     {
-        public abstract bool HandleMove(ChessBoard board);
+        public abstract int HandleMove(ChessBoard board);
+    }
+
+    public static class GameStates {
+        public const int White = 0;
+        public const int Black = 1;
+        public const int End = 2;
     }
 
     class BlackTurnState : State
     {
-        public bool HandleMove(ChessBoard board)
+        public int HandleMove(ChessBoard board)
         {
             List<Field> move;
             bool success = false;
@@ -41,16 +47,16 @@ namespace Name
                     if (board.isCheckMate(PieceColor.White))
                     {
                         Console.WriteLine("Мат Королю белых!");
-                        return false;
+                        return GameStates.End;
                     }
-                    return true;
+                    return GameStates.White;
                 }
             }
         }
     }
     class WhiteTurnState : State
     {
-        public bool HandleMove(ChessBoard board)
+        public int HandleMove(ChessBoard board)
         {
             List<Field> move;
             bool success = false;
@@ -81,9 +87,9 @@ namespace Name
                     if (board.isCheckMate(PieceColor.Black))
                     {
                         Console.WriteLine("Мат Королю чёрных!");
-                        return false;
+                        return GameStates.End;
                     }
-                    return true;
+                    return GameStates.Black;
                 }
             }
         }

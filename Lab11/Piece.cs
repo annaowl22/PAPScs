@@ -614,7 +614,7 @@ namespace Name
 
     class King : Piece
     {
-        public King(PieceColor _color, Field _position) : base(_color, 1000, _position, "king", "K") { }
+        public King(PieceColor _color, Field _position) : base(_color, 0, _position, "king", "K") { }
 
         public override List<Field> getPossibleMoves(ChessBoard board)
         {

@@ -12,6 +12,7 @@ namespace Name
             ChessSetup setup = new ChessPawnTurnPosition();
             ChessBoard board = setup.makeChessBoard();
             board.printBoard();
+            Console.WriteLine(board.getValue().ToString());
             MoveReader reader = new MoveReader();
             List<Field> move = MoveReader.read();
             board.makeUserMove(move[0], move[1]);
@@ -24,14 +25,17 @@ namespace Name
                 Console.WriteLine("The show must go on");
             }
             board.printBoard();
+            Console.WriteLine(board.getValue().ToString());
             move = MoveReader.read();
             board.makeUserMove(move[0], move[1]);
             board.printBoard();
+            Console.WriteLine(board.getValue().ToString());
             move = MoveReader.read();
             board.makeUserMove(move[0], move[1]);
             board.printBoard();
+            Console.WriteLine(board.getValue().ToString());
             move = MoveReader.read();
-            board.makeUserMove(move[0],move[1]);
+            board.makeUserMove(move[0], move[1]);
             if (board.isCheckMate(PieceColor.Black))
             {
                 Console.WriteLine("Mate");
@@ -41,6 +45,7 @@ namespace Name
                 Console.WriteLine("The show must go on");
             }
             board.printBoard();
+            Console.WriteLine(board.getValue().ToString());
         }
     }
 }
