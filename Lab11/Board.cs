@@ -204,7 +204,7 @@ namespace Name{
                 return false;
             }
             Piece piece = grid[a.Vertical, a.Horizontal];
-            List<Field> moves = piece.getMoves(this);
+            List<Field> moves = piece.getPossibleMoves(this);
             if (!b.isIn(moves))
             {
                 return false;
@@ -213,6 +213,10 @@ namespace Name{
             ChessBoard new_board = DeepCopy();
             new_board.grid[b.Vertical, b.Horizontal] = piece;
             new_board.removePiece(a);
+            if (new_board.isCheck(piece.color))
+            {
+                return false;
+            }
             piece.hasMoved = true;
             grid[b.Vertical, b.Horizontal] = piece;
             removePiece(a);

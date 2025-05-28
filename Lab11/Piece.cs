@@ -73,11 +73,12 @@ namespace Name
             List<Field> possible_moves = getPossibleMoves(board);
             List<Field> moves = new List<Field>();
             ChessBoard new_board;
-            foreach(Field move in possible_moves)
+            bool success;
+            foreach (Field move in possible_moves)
             {
                 new_board = board.DeepCopy();
-                new_board.makeMove(position, move);
-                if(!new_board.isCheck(color))
+                success = new_board.makeMove(position, move);
+                if (success)
                 {
                     moves.Add(move);
                 }

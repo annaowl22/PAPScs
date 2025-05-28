@@ -13,16 +13,16 @@ namespace Name
             ChessBoard board = setup.makeChessBoard();
             board.printBoard();
             MoveReader reader = new MoveReader();
-            List<Field> move = reader.read();
+            List<Field> move = MoveReader.read();
             board.makeUserMove(move[0], move[1]);
             board.printBoard();
-            move = reader.read();
+            move = MoveReader.read();
             board.makeUserMove(move[0], move[1]);
             board.printBoard();
-            move = reader.read();
+            move = MoveReader.read();
             board.makeUserMove(move[0], move[1]);
             board.printBoard();
-            move = reader.read();
+            move = MoveReader.read();
             board.makeUserMove(move[0],move[1]);
             board.printBoard();
         }

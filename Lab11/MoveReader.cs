@@ -16,7 +16,7 @@ namespace Name
         public static List<Field> read()
         {
             List<Field> move = new List<Field>();
-            Console.WriteLine("Введите ход в формате e2-e4, запросите АНАЛИЗ или признайте поражение словом СДАЮСЬ");
+            Console.WriteLine("Введите ход в формате e2-e4 или признайте поражение словом СДАЮСЬ");
             string? input;
             while (true)
             {
