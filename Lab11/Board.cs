@@ -17,15 +17,7 @@ namespace Name{
 
         public Piece getKing(PieceColor color)
         {
-            List<Piece> my_pieces;
-            if (color == PieceColor.Black)
-            {
-                my_pieces = getBlackPieces();
-            }
-            else
-            {
-                my_pieces = getWhitePieces();
-            }
+            List<Piece> my_pieces = getColorPieces(color);
             foreach (Piece piece in my_pieces)
             {
                 if (piece.name == "king")
@@ -42,11 +34,11 @@ namespace Name{
             List<Piece> enemies;
             if (color == PieceColor.White)
             {
-                enemies = getBlackPieces();
+                enemies = getColorPieces(PieceColor.Black);
             }
             else
             {
-                enemies = getWhitePieces();
+                enemies = getColorPieces(PieceColor.White);
             }
             foreach (Piece enemy in enemies)
             {
@@ -58,49 +50,48 @@ namespace Name{
             return false;
         }
 
-        public List<Piece> getWhitePieces()
+        public bool isCheckMate(PieceColor color)
         {
-            List<Piece> white_pieces = new List<Piece>();
-            for (int v = 0; v < 8; v++)
+            List <Piece> pieces = getColorPieces(color);
+            if (isCheck(color))
             {
-                for (int h = 0; h < 8; h++)
+                foreach (Piece piece in pieces)
                 {
-                    if (grid[v, h] != null)
+                    if (piece.getMoves(this).Count != 0)
                     {
-                        if (grid[v, h].color == PieceColor.White)
-                        {
-                            white_pieces.Add(grid[v, h]);
-                        }
+                        return false;
                     }
                 }
+                return true;
             }
-            return white_pieces;
+            return false;
         }
 
-        public List<Piece> getBlackPieces()
+        public List<Piece> getColorPieces(PieceColor color)
         {
-            List<Piece> black_pieces = new List<Piece>();
+            List<Piece> pieces = new List<Piece>();
             for (int v = 0; v < 8; v++)
             {
                 for (int h = 0; h < 8; h++)
                 {
                     if (grid[v, h] != null)
                     {
-                        if (grid[v, h].color == PieceColor.Black)
+                        if (grid[v, h].color == color)
                         {
-                            black_pieces.Add(grid[v, h]);
+                            pieces.Add(grid[v, h]);
                         }
                     }
                 }
             }
-            return black_pieces;
+            return pieces;
         }
+
 
         public int getValue()
         {
             int value = 0;
-            List<Piece> white_pieces = getWhitePieces();
-            List<Piece> black_pieces = getBlackPieces();
+            List<Piece> white_pieces = getColorPieces(PieceColor.White);
+            List<Piece> black_pieces = getColorPieces(PieceColor.Black);
             foreach (Piece piece in white_pieces)
             {
                 value += piece.getValue();

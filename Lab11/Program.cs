@@ -15,6 +15,14 @@ namespace Name
             MoveReader reader = new MoveReader();
             List<Field> move = MoveReader.read();
             board.makeUserMove(move[0], move[1]);
+            if (board.isCheckMate(PieceColor.White))
+            {
+                Console.WriteLine("Mate");
+            }
+            else
+            {
+                Console.WriteLine("The show must go on");
+            }
             board.printBoard();
             move = MoveReader.read();
             board.makeUserMove(move[0], move[1]);
