@@ -213,9 +213,6 @@ namespace Name{
             ChessBoard new_board = DeepCopy();
             new_board.grid[b.Vertical, b.Horizontal] = piece;
             new_board.removePiece(a);
-            if(new_board.isCheck(piece.color)){
-                return false;
-            }
             piece.hasMoved = true;
             grid[b.Vertical, b.Horizontal] = piece;
             removePiece(a);

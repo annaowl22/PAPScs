@@ -70,7 +70,20 @@ namespace Name
         }
         public List<Field> getMoves(ChessBoard board)
         {
-            return getPossibleMoves(board);
+            List<Field> possible_moves = getPossibleMoves(board);
+            List<Field> moves = new List<Field>();
+            ChessBoard new_board;
+            foreach(Field move in possible_moves)
+            {
+                new_board = board.DeepCopy();
+                new_board.makeMove(position, move);
+                if(!new_board.isCheck(color))
+                {
+                    moves.Add(move);
+                }
+            }
+            return moves;
+
         }
         public Piece Copy()
         {
