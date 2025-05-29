@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace Name
 {
     interface State
     {
-        public abstract int HandleMove(ChessBoard board);
+        public abstract void HandleMove(Game game, ChessBoard board);
     }
 
     public static class GameStates
@@ -17,9 +18,17 @@ namespace Name
         public const int Replay = 4;
     }
 
+    class EndProgramState : State
+    {
+        public void HandleMove(Game game, ChessBoard board)
+        {
+            return;
+        }
+    }
+
     class BlackTurnState : State
     {
-        public int HandleMove(ChessBoard board)
+        public void HandleMove(Game game, ChessBoard board)
         {
             List<Field> move;
             bool success = false;
@@ -28,23 +37,24 @@ namespace Name
                 move = MoveReader.read();
                 if (move[0].isEqual(move[1]))
                 {
-                    return GameStates.End;
+                    game.ChangeState(new EndgameState());
+                    break;
                 }
                 if (board.grid[move[0].Vertical, move[0].Horizontal] != null)
+                {
+                    if (board.grid[move[0].Vertical, move[0].Horizontal].color == PieceColor.Black)
                     {
-                        if (board.grid[move[0].Vertical, move[0].Horizontal].color == PieceColor.Black)
-                        {
-                            success = board.makeUserMove(move[0], move[1]);
-                        }
-                        else
-                        {
-                            Console.WriteLine("Нельзя ходить фигурами противника");
-                        }
+                        success = board.makeUserMove(move[0], move[1]);
                     }
                     else
                     {
-                        Console.WriteLine("Фигура на поле отсутствует");
+                        Console.WriteLine("Нельзя ходить фигурами противника");
                     }
+                }
+                else
+                {
+                    Console.WriteLine("Фигура на поле отсутствует");
+                }
                 if (success)
                 {
                     if (board.isCheck(PieceColor.White))
@@ -54,16 +64,18 @@ namespace Name
                     if (board.isCheckMate(PieceColor.White))
                     {
                         Console.WriteLine("Мат Королю белых!");
-                        return GameStates.End;
+                        game.ChangeState(new EndgameState());
+                        break;
                     }
-                    return GameStates.White;
+                    game.ChangeState(new WhiteTurnState());
+                    break;
                 }
             }
         }
     }
     class WhiteTurnState : State
     {
-        public int HandleMove(ChessBoard board)
+        public void HandleMove(Game game, ChessBoard board)
         {
             List<Field> move;
             bool success = false;
@@ -72,7 +84,8 @@ namespace Name
                 move = MoveReader.read();
                 if (move[0].isEqual(move[1]))
                 {
-                    return GameStates.End;
+                    game.ChangeState(new EndgameState());
+                    break;
                 }
                 if (board.grid[move[0].Vertical, move[0].Horizontal] != null)
                 {
@@ -98,9 +111,11 @@ namespace Name
                     if (board.isCheckMate(PieceColor.Black))
                     {
                         Console.WriteLine("Мат Королю чёрных!");
-                        return GameStates.End;
+                        game.ChangeState(new EndgameState());
+                        break;
                     }
-                    return GameStates.Black;
+                    game.ChangeState(new BlackTurnState());
+                    break;
                 }
             }
         }
@@ -108,7 +123,7 @@ namespace Name
 
     class EndgameState : State
     {
-        public int HandleMove(ChessBoard board)
+        public void HandleMove(Game game, ChessBoard board)
         {
             Console.WriteLine("Игра завершилась, хотите выйти и перезапустить игру с другими условиями или взять реванш?");
             Console.WriteLine("Напишите 0 для выхода или любой другой ввод для реванша");
@@ -123,11 +138,13 @@ namespace Name
                 {
                     if (input == "0")
                     {
-                        return GameStates.EndProgram;
+                        game.ChangeState(new EndProgramState());
+                        break;
                     }
                     else
                     {
-                        return GameStates.Replay;
+                        game.Reset();
+                        break;
                     }
                 }
                 input = Console.ReadLine();
