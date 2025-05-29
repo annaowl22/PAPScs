@@ -22,6 +22,7 @@ namespace Name
             int state_id;
             while(flag)
             {
+                board.printBoard();
                 state_id = state.HandleMove(board);
                 if(state_id == GameStates.White)
                 {

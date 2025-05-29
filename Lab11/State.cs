@@ -70,6 +70,10 @@ namespace Name
             while (true)
             {
                 move = MoveReader.read();
+                if (move[0].isEqual(move[1]))
+                {
+                    return GameStates.End;
+                }
                 if (board.grid[move[0].Vertical, move[0].Horizontal] != null)
                 {
                     if (board.grid[move[0].Vertical, move[0].Horizontal].color == PieceColor.White)

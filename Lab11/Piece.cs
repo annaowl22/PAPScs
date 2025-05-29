@@ -763,15 +763,6 @@ namespace Name
                     }
                 }
             }
-            else if (hasMoved)
-            {
-                Console.WriteLine("Король ходил");
-            }
-            else
-            {
-                Console.WriteLine("Король не на стартовой позиции");
-                Console.WriteLine(position.Vertical.ToString() + ' ' + position.Horizontal.ToString());
-            }
             return moves;
             
         }
