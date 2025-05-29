@@ -18,7 +18,7 @@ namespace Name
             {
                 Console.WriteLine("Напишите 0, если хотите выйти, 1 для настройки игры или любую другую клавишу, чтобы сыграть классическую партию");
                 input = Console.ReadLine();
-                if(input == null)
+                if(string.IsNullOrWhiteSpace(input))
                 {
                     Console.WriteLine("Ввод не может быть пустым. Следуйте инструкции");
                     continue;
@@ -34,7 +34,7 @@ namespace Name
                     Console.WriteLine("2. Мат в один ход - белые ходят.");
                     Console.WriteLine("[Enter]. Вернуться назад");
                     input = Console.ReadLine();
-                    if(input == null)
+                    if(string.IsNullOrWhiteSpace(input))
                     {
                         continue;
                     }

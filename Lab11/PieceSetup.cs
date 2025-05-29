@@ -61,7 +61,7 @@ namespace Name
         {
             ChessBoard board = new ChessBoard();
 
-            board.AddPiece(new Queen(PieceColor.White, new Field(2, 0)));
+            board.AddPiece(new King(PieceColor.White, new Field(2, 0)));
             board.AddPiece(new Rook(PieceColor.White, new Field(3, 0)));
             board.AddPiece(new Rook(PieceColor.White, new Field(7, 0)));
             board.AddPiece(new Bishop(PieceColor.White, new Field(2, 3)));
@@ -74,8 +74,8 @@ namespace Name
             board.AddPiece(new Pawn(PieceColor.White, new Field(6, 1)));
             board.AddPiece(new Pawn(PieceColor.White, new Field(6, 4)));
 
-            board.AddPiece(new King(PieceColor.Black, new Field(2, 5)));
-            board.AddPiece(new Queen(PieceColor.Black, new Field(5, 7)));
+            board.AddPiece(new Queen(PieceColor.Black, new Field(2, 5)));
+            board.AddPiece(new King(PieceColor.Black, new Field(5, 7)));
             board.AddPiece(new Rook(PieceColor.Black, new Field(0, 7)));
             board.AddPiece(new Rook(PieceColor.Black, new Field(4, 7)));
             board.AddPiece(new Bishop(PieceColor.Black, new Field(2, 7)));

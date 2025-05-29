@@ -169,26 +169,26 @@ namespace Name{
             }
             piece.position = b;
             ChessBoard new_board = DeepCopy();
-            new_board.grid[b.Vertical, b.Horizontal] = piece;
+            new_board.AddPiece(piece);
             new_board.removePiece(a);
             if(new_board.isCheck(piece.color)){
                 Console.WriteLine("Собственный король не должен оказаться под шахом");
                 return false;
             }
             piece.hasMoved = true;
-            grid[b.Vertical, b.Horizontal] = piece;
+            AddPiece(piece);
             removePiece(a);
             if (piece.name == "king")
             {
                 if (b.Vertical - a.Vertical == 2)
                 {
-                    grid[5, a.Horizontal] = grid[7, a.Horizontal].Copy();
+                    AddPiece(new Rook(piece.color, new Field(5, a.Horizontal)));
                     removePiece(new Field(7, a.Horizontal));
                 }
                 if (b.Vertical - a.Vertical == -3)
                 {
-                    grid[3, a.Horizontal] = grid[0, a.Horizontal].Copy();
-                    removePiece(new Field(3, a.Horizontal));
+                    AddPiece(new Rook(piece.color, new Field(3, a.Horizontal)));
+                    removePiece(new Field(0, a.Horizontal));
                 }
             }else if(piece.name == "pawn")
             {
@@ -213,26 +213,26 @@ namespace Name{
             }
             piece.position = b;
             ChessBoard new_board = DeepCopy();
-            new_board.grid[b.Vertical, b.Horizontal] = piece;
+            new_board.AddPiece(piece);
             new_board.removePiece(a);
             if (new_board.isCheck(piece.color))
             {
                 return false;
             }
             piece.hasMoved = true;
-            grid[b.Vertical, b.Horizontal] = piece;
+            AddPiece(piece);
             removePiece(a);
             if (piece.name == "king")
             {
                 if (b.Vertical - a.Vertical == 2)
                 {
-                    grid[5, a.Horizontal] = grid[7, a.Horizontal].Copy();
+                    AddPiece(new Rook(piece.color, new Field(5, a.Horizontal)));
                     removePiece(new Field(7, a.Horizontal));
                 }
                 if (b.Vertical - a.Vertical == -3)
                 {
-                    grid[3, a.Horizontal] = grid[0, a.Horizontal].Copy();
-                    removePiece(new Field(3, a.Horizontal));
+                    AddPiece(new Rook(piece.color, new Field(3, a.Horizontal)));
+                    removePiece(new Field(0, a.Horizontal));
                 }
             }
             return true;
