@@ -31,16 +31,26 @@ namespace Name
                 {
                     Console.WriteLine("Выберите шахматную ситуацию:");
                     Console.WriteLine("1. Пешка белых проходит и превращается.");
+                    Console.WriteLine("2. Мат в один ход - белые ходят.");
                     Console.WriteLine("[Enter]. Вернуться назад");
                     input = Console.ReadLine();
                     if(input == null)
                     {
                         continue;
                     }
-                    else
+                    else if (input == "1")
                     {
                         setup = new ChessPawnTurnPosition();
                         state = new WhiteTurnState();
+                    }
+                    else if (input == "2")
+                    {
+                        setup = new MateInOneTurnWhiteStart();
+                        state = new WhiteTurnState();
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
                 else

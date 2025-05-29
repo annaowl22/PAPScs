@@ -56,4 +56,41 @@ namespace Name
             return board;
         }
     }
+
+    class MateInOneTurnWhiteStart : ChessSetup
+    {
+
+        public ChessBoard makeChessBoard()
+        {
+            ChessBoard board = new ChessBoard();
+
+            board.grid[2, 0] = new Queen(PieceColor.White, new Field(2, 0));
+            board.grid[3, 0] = new Rook(PieceColor.White, new Field(3, 0));
+            board.grid[7, 0] = new Rook(PieceColor.White, new Field(7, 0));
+            board.grid[2, 3] = new Bishop(PieceColor.White, new Field(2, 3));
+            board.grid[4, 6] = new Knight(PieceColor.White, new Field(4, 6));
+
+            board.grid[0, 1] = new Pawn(PieceColor.White, new Field(0, 1)); 
+            board.grid[1, 1] = new Pawn(PieceColor.White, new Field(1, 1)); 
+            board.grid[4, 2] = new Pawn(PieceColor.White, new Field(4, 2));
+            board.grid[5, 1] = new Pawn(PieceColor.White, new Field(5, 1)); 
+            board.grid[6, 1] = new Pawn(PieceColor.White, new Field(6, 1));
+            board.grid[6, 4] = new Pawn(PieceColor.White, new Field(6, 4)); 
+
+            board.grid[2, 5] = new King(PieceColor.Black, new Field(2, 5)); 
+            board.grid[5, 7] = new Queen(PieceColor.Black, new Field(5, 7)); 
+            board.grid[0, 7] = new Rook(PieceColor.Black, new Field(0, 7));
+            board.grid[4, 7] = new Rook(PieceColor.Black, new Field(4, 7));
+            board.grid[2, 7] = new Bishop(PieceColor.Black, new Field(2, 7));
+            board.grid[6, 6] = new Bishop(PieceColor.Black, new Field(6, 6));
+            board.grid[3, 6] = new Knight(PieceColor.Black, new Field(3, 6)); 
+
+            board.grid[0, 4] = new Pawn(PieceColor.Black, new Field(0, 4));
+            board.grid[3, 3] = new Pawn(PieceColor.Black, new Field(3, 3)); 
+            board.grid[3, 5] = new Pawn(PieceColor.Black, new Field(3, 5)); 
+            board.grid[6, 5] = new Pawn(PieceColor.Black, new Field(6, 5)); 
+
+            return board;
+        }
+    }
 }
