@@ -59,6 +59,7 @@ namespace Name
                     state = new WhiteTurnState();
                 }
                 game = new Game(state, setup);
+                game.RegisterObserver(new Notator());
                 game.run();
             }
             Console.WriteLine("До следующей сессии!");

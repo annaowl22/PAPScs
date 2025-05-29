@@ -57,6 +57,7 @@ namespace Name
                 }
                 if (success)
                 {
+                    game.last_move = move;
                     if (board.isCheck(PieceColor.White))
                     {
                         Console.WriteLine("Шах Королю белых!");
@@ -104,6 +105,7 @@ namespace Name
                 }
                 if (success)
                 {
+                    game.last_move = move;
                     if (board.isCheck(PieceColor.Black))
                     {
                         Console.WriteLine("Шах Королю чёрных!");
