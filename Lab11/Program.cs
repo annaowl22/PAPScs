@@ -9,43 +9,49 @@ namespace Name
     {
         static void Main(string[] args)
         {
-            ChessSetup setup = new ChessPawnTurnPosition();
-            ChessBoard board = setup.makeChessBoard();
-            board.printBoard();
-            Console.WriteLine(board.getValue().ToString());
-            MoveReader reader = new MoveReader();
-            List<Field> move = MoveReader.read();
-            board.makeUserMove(move[0], move[1]);
-            if (board.isCheckMate(PieceColor.White))
+            Console.WriteLine("Добро пожаловать в игру!");
+            string? input;
+            ChessSetup setup;
+            State state;
+            Game game;
+            while(true)
             {
-                Console.WriteLine("Mate");
+                Console.WriteLine("Напишите 0, если хотите выйти, 1 для настройки игры или любую другую клавишу, чтобы сыграть классическую партию");
+                input = Console.ReadLine();
+                if(input == null)
+                {
+                    Console.WriteLine("Ввод не может быть пустым. Следуйте инструкции");
+                    continue;
+                }
+                if(input == "0")
+                {
+                    break;
+                }
+                else if(input == "1")
+                {
+                    Console.WriteLine("Выберите шахматную ситуацию:");
+                    Console.WriteLine("1. Пешка белых проходит и превращается.");
+                    Console.WriteLine("[Enter]. Вернуться назад");
+                    input = Console.ReadLine();
+                    if(input == null)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        setup = new ChessPawnTurnPosition();
+                        state = new WhiteTurnState();
+                    }
+                }
+                else
+                {
+                    setup = new ChessStartingPosition();
+                    state = new WhiteTurnState();
+                }
+                game = new Game(state, setup);
+                game.run();
             }
-            else
-            {
-                Console.WriteLine("The show must go on");
-            }
-            board.printBoard();
-            Console.WriteLine(board.getValue().ToString());
-            move = MoveReader.read();
-            board.makeUserMove(move[0], move[1]);
-            board.printBoard();
-            Console.WriteLine(board.getValue().ToString());
-            move = MoveReader.read();
-            board.makeUserMove(move[0], move[1]);
-            board.printBoard();
-            Console.WriteLine(board.getValue().ToString());
-            move = MoveReader.read();
-            board.makeUserMove(move[0], move[1]);
-            if (board.isCheckMate(PieceColor.Black))
-            {
-                Console.WriteLine("Mate");
-            }
-            else
-            {
-                Console.WriteLine("The show must go on");
-            }
-            board.printBoard();
-            Console.WriteLine(board.getValue().ToString());
+            Console.WriteLine("До следующей сессии!");
         }
     }
 }

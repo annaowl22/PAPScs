@@ -14,6 +14,7 @@ namespace Name
         public const int Black = 1;
         public const int End = 2;
         public const int EndProgram = 3;
+        public const int Replay = 4;
     }
 
     class BlackTurnState : State
@@ -122,7 +123,7 @@ namespace Name
                     }
                     else
                     {
-                        return GameStates.End;
+                        return GameStates.Replay;
                     }
                 }
                 input = Console.ReadLine();
