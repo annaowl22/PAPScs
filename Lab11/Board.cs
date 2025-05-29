@@ -145,6 +145,14 @@ namespace Name{
             grid[field.Vertical, field.Horizontal] = null;
         }
 
+        public void AddPiece(Piece piece)
+        {
+            int x = piece.position.Vertical; 
+            int y = piece.position.Horizontal; 
+
+            grid[x, y] = piece;
+        }
+
         public bool makeUserMove(Field a, Field b)
         {
             if (grid[a.Vertical, a.Horizontal] == null)
