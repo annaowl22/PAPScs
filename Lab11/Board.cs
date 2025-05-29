@@ -31,6 +31,9 @@ namespace Name{
         public bool isCheck(PieceColor color)
         {
             Piece king = getKing(color);
+            if(king is Pawn){
+                return false;
+            }
             List<Piece> enemies;
             if (color == PieceColor.White)
             {
