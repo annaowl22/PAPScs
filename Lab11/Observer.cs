@@ -35,12 +35,23 @@ namespace Name
                 return;
             }
             string this_move = "";
-            this_move += board.grid[move[1].Vertical, move[1].Horizontal].symbol;
-            this_move += (move[0].Vertical + 'a');
-            this_move += (move[0].Horizontal + 1).ToString();
-            this_move += "-";
-            this_move += (move[1].Vertical + 'a');
-            this_move += (move[1].Horizontal + 1).ToString();
+            if(board.grid[move[1].Vertical, move[1].Horizontal].name == "king" && move[0].Vertical==move[1].Vertical - 2)
+            {
+                this_move = "0-0";
+            }
+            else if(board.grid[move[1].Vertical, move[1].Horizontal].name == "king" && move[0].Vertical==move[1].Vertical + 2)
+            {
+                this_move = "0-0-0";
+            }
+            else
+            {
+                this_move += board.grid[move[1].Vertical, move[1].Horizontal].symbol;
+                this_move += (char)('a' + move[0].Vertical);
+                this_move += move[0].Horizontal + 1;
+                this_move += "-";
+                this_move += (char)('a' + move[1].Vertical);
+                this_move += move[1].Horizontal + 1;
+            }
             if (board.grid[move[1].Vertical, move[1].Horizontal].color == PieceColor.White && board.isCheck(PieceColor.Black) |
             board.grid[move[1].Vertical, move[1].Horizontal].color == PieceColor.Black && board.isCheck(PieceColor.White))
             {
