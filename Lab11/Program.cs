@@ -60,6 +60,12 @@ namespace Name
                 }
                 game = new Game(state, setup);
                 game.RegisterObserver(new Notator());
+                Console.WriteLine("Хотите подключить оценивание позиции? Введите любое число, если да, иначе пропустите ввод");
+                input = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(input))
+                {
+                    game.RegisterObserver(new Onexbet());
+                }
                 game.run();
             }
             Console.WriteLine("До следующей сессии!");

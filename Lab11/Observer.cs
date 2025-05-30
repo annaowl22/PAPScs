@@ -35,11 +35,11 @@ namespace Name
                 return;
             }
             string this_move = "";
-            if(board.grid[move[1].Vertical, move[1].Horizontal].name == "king" && move[0].Vertical==move[1].Vertical - 2)
+            if (board.grid[move[1].Vertical, move[1].Horizontal].name == "king" && move[0].Vertical == move[1].Vertical - 2)
             {
                 this_move = "0-0";
             }
-            else if(board.grid[move[1].Vertical, move[1].Horizontal].name == "king" && move[0].Vertical==move[1].Vertical + 2)
+            else if (board.grid[move[1].Vertical, move[1].Horizontal].name == "king" && move[0].Vertical == move[1].Vertical + 2)
             {
                 this_move = "0-0-0";
             }
@@ -52,7 +52,7 @@ namespace Name
                 this_move += (char)('a' + move[1].Vertical);
                 this_move += move[1].Horizontal + 1;
             }
-            if (board.isCheck(PieceColor.Black)|board.isCheck(PieceColor.White))
+            if (board.isCheck(PieceColor.Black) | board.isCheck(PieceColor.White))
             {
                 this_move += "+";
             }
@@ -62,8 +62,40 @@ namespace Name
             }
             else
             {
-                notation[notation.Count-1] += " " + this_move;
+                notation[notation.Count - 1] += " " + this_move;
             }
+        }
+    }
+
+    class Onexbet : Observer
+    {
+        public void getNotice(ChessBoard board, List<Field> move, State state)
+        {
+            int count_situation = board.getValue();
+            if (state is EndgameState)
+            {
+                return;
+            }
+            if (count_situation > 0)
+                {
+                    Console.WriteLine("Перевес в " + count_situation + " в сторону белых");
+                    if (state is BlackTurnState && count_situation > 4)
+                    {
+                        Console.WriteLine("Уверены, что не хотите сдаться в такой ситуации?");
+                    }
+                }
+                else if (count_situation < 0)
+                {
+                    Console.WriteLine("Перевес в " + (-count_situation) + " в сторону чёрных");
+                    if (state is WhiteTurnState && count_situation > 4)
+                    {
+                        Console.WriteLine("Уверены, что не хотите сдаться в такой ситуации?");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Стороны имеют равные силы");
+                }
         }
     }
 }
