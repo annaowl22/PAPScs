@@ -52,8 +52,7 @@ namespace Name
                 this_move += (char)('a' + move[1].Vertical);
                 this_move += move[1].Horizontal + 1;
             }
-            if (board.grid[move[1].Vertical, move[1].Horizontal].color == PieceColor.White && board.isCheck(PieceColor.Black) |
-            board.grid[move[1].Vertical, move[1].Horizontal].color == PieceColor.Black && board.isCheck(PieceColor.White))
+            if (board.isCheck(PieceColor.Black)|board.isCheck(PieceColor.White))
             {
                 this_move += "+";
             }
