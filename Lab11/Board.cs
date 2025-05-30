@@ -5,9 +5,20 @@ using System.Net.Http.Headers;
 using System.Reflection;
 
 namespace Name{
+    
 
     class ChessBoard : Unit
     {
+        static int[,] centerControl = {
+            { 0, 0, 0, 0, 0, 0, 0, 0 },
+            { 0, 1, 2, 3, 3, 2, 1, 0 },
+            { 0, 2, 4, 6, 6, 4, 2, 0 },
+            { 0, 3, 6, 8, 8, 6, 3, 0 },
+            { 0, 3, 6, 8, 8, 6, 3, 0 },
+            { 0, 2, 4, 6, 6, 4, 2, 0 },
+            { 0, 1, 2, 3, 3, 2, 1, 0 },
+            { 0, 0, 0, 0, 0, 0, 0, 0 }
+        };
         public Piece?[,] grid;
 
         public ChessBoard()
@@ -92,6 +103,7 @@ namespace Name{
 
         public int getValue()
         {
+            //Pieces
             int value = 0;
             List<Piece> white_pieces = getColorPieces(PieceColor.White);
             List<Piece> black_pieces = getColorPieces(PieceColor.Black);
@@ -103,6 +115,36 @@ namespace Name{
             {
                 value -= piece.getValue();
             }
+            value *= 100;
+
+            //Centre
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (grid[i, j] != null)
+                    {
+                        if (grid[i, j].color == PieceColor.White)
+                        {
+                            value += centerControl[i, j];
+                        }
+                        else
+                        {
+                            value -= centerControl[i, j];
+                        }
+                    }
+                }
+            }
+            //Moves
+            foreach (Piece piece in white_pieces)
+            {
+                value += piece.getMoves(this).Count;
+            }
+            foreach (Piece piece in black_pieces)
+            {
+                value -= piece.getMoves(this).Count;
+            }
+
             return value;
         }
         public void printBoard()

@@ -71,7 +71,8 @@ namespace Name
     {
         public void getNotice(ChessBoard board, List<Field> move, State state)
         {
-            int count_situation = board.getValue();
+            float count_situation = board.getValue();
+            count_situation /= 100;
             if (state is EndgameState)
             {
                 return;
