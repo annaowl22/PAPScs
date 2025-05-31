@@ -32,6 +32,9 @@ namespace Name
                     Console.WriteLine("Выберите шахматную ситуацию:");
                     Console.WriteLine("1. Пешка белых проходит и превращается.");
                     Console.WriteLine("2. Мат в один ход - белые ходят.");
+                    Console.WriteLine("3. Мат в два хода - белые ходят.");
+                    Console.WriteLine("4. Мат в три хода - белые ходят.");
+                    Console.WriteLine("5. Мат в два хода - черные ходят.");
                     Console.WriteLine("[Enter]. Вернуться назад");
                     input = Console.ReadLine();
                     if(string.IsNullOrWhiteSpace(input))
@@ -47,6 +50,21 @@ namespace Name
                     {
                         setup = new MateInOneTurnWhiteStart();
                         state = new WhiteTurnState();
+                    }
+                    else if (input == "3")
+                    {
+                        setup = new MateInTwoTurnsWhiteStart();
+                        state = new WhiteTurnState();
+                    }
+                    else if (input == "4")
+                    {
+                        setup = new MateInThreeTurnsWhiteStart();
+                        state = new WhiteTurnState();
+                    }
+                    else if (input == "5")
+                    {
+                        setup = new MateInTwoTurnsWhiteStartSmall();
+                        state = new BlackTurnState();
                     }
                     else
                     {
