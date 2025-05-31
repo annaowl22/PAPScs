@@ -75,6 +75,69 @@ namespace Name{
             }
             return false;
         }
+        public bool isDraw(PieceColor color)
+        {
+            List <Piece> pieces = getColorPieces(color);
+            List <Piece> enemies;
+            if(color == PieceColor.Black)
+            {
+                enemies = getColorPieces(PieceColor.White);
+            }
+            else
+            {
+                enemies = getColorPieces(PieceColor.Black);
+            }
+            bool isdraw = true;
+            if (!isCheck(color))
+            {
+                foreach (Piece piece in pieces)
+                {
+                    if (piece.getMoves(this).Count != 0)
+                    {
+                        isdraw = false;
+                    }
+                }
+            }
+            if(isdraw){
+                return true;
+            }
+            bool ienough = true;
+            bool youenough = true;
+
+            if(pieces.Count == 1)
+            {
+                ienough = false;
+            }
+            if(enemies.Count == 1)
+            {
+                youenough = false;
+            }
+            if(ienough)
+            {
+                if(pieces.Count == 2)
+                {
+                    if(pieces[0] is Bishop | pieces[0] is Knight | pieces[1] is Bishop | pieces[1] is Knight)
+                    {
+                        ienough = false;
+                    }
+                }
+            }
+            if(youenough)
+            {
+                if(enemies.Count == 2)
+                {
+                    if(enemies[0] is Bishop | enemies[0] is Knight | enemies[1] is Bishop | enemies[1] is Knight)
+                    {
+                        youenough = false;
+                    }
+                }
+            }
+            if(!ienough && !youenough)
+            {
+                return true;
+            }
+            return false;
+        }
 
         public List<Piece> getColorPieces(PieceColor color)
         {
