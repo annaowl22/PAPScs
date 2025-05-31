@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Net.Http.Headers;
-using System.Reflection;
-namespace Name
+﻿namespace Name
 {
     class Program()
     {
