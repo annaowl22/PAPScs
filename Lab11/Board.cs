@@ -253,7 +253,7 @@ namespace Name{
             grid[x, y] = piece;
         }
 
-        public bool makeUserMove(Field a, Field b)
+        public bool makeUserMove(Field a, Field b, IMoveGetter reader)
         {
             if (grid[a.Vertical, a.Horizontal] == null)
             {
@@ -294,7 +294,7 @@ namespace Name{
             {
                 if(piece.color==PieceColor.White && b.Horizontal==7 || piece.color==PieceColor.Black && b.Horizontal==0)
                 {
-                    grid[b.Vertical, b.Horizontal] = MoveReader.pawnTurn(piece.color, b);
+                    grid[b.Vertical, b.Horizontal] = reader.pawnTurn(piece.color, b);
                 }
             }
             return true;

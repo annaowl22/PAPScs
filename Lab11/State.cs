@@ -3,21 +3,13 @@ namespace Name
 {
     interface State
     {
-        public abstract void HandleMove(Game game, ChessBoard board);
-    }
-
-    public static class GameStates
-    {
-        public const int White = 0;
-        public const int Black = 1;
-        public const int End = 2;
-        public const int EndProgram = 3;
-        public const int Replay = 4;
+        public abstract void HandleMove(Game game);
+        //public abstract void HandleMove(Game game, ChessBoard board, IMoveAd);
     }
 
     class EndProgramState : State
     {
-        public void HandleMove(Game game, ChessBoard board)
+        public void HandleMove(Game game)
         {
             return;
         }
@@ -25,13 +17,16 @@ namespace Name
 
     class BlackTurnState : State
     {
-        public void HandleMove(Game game, ChessBoard board)
+        public void HandleMove(Game game)
         {
+            var board = game.board;
+            var reader = game.readerBlack;
+
             List<Field> move;
             bool success = false;
             while (true)
             {
-                move = MoveReader.read();
+                move = reader.read();
                 if (move[0].isEqual(move[1]))
                 {
                     game.ChangeState(new EndgameState());
@@ -41,7 +36,7 @@ namespace Name
                 {
                     if (board.grid[move[0].Vertical, move[0].Horizontal].color == PieceColor.Black)
                     {
-                        success = board.makeUserMove(move[0], move[1]);
+                        success = board.makeUserMove(move[0], move[1], reader);
                     }
                     else
                     {
@@ -73,13 +68,16 @@ namespace Name
     }
     class WhiteTurnState : State
     {
-        public void HandleMove(Game game, ChessBoard board)
+        public void HandleMove(Game game)
         {
+            var board = game.board;
+            var reader = game.readerWhite;
+
             List<Field> move;
             bool success = false;
             while (true)
             {
-                move = MoveReader.read();
+                move = reader.read();
                 if (move[0].isEqual(move[1]))
                 {
                     game.ChangeState(new EndgameState());
@@ -89,7 +87,7 @@ namespace Name
                 {
                     if (board.grid[move[0].Vertical, move[0].Horizontal].color == PieceColor.White)
                     {
-                        success = board.makeUserMove(move[0], move[1]);
+                        success = board.makeUserMove(move[0], move[1], reader);
                     }
                     else
                     {
@@ -122,7 +120,7 @@ namespace Name
 
     class EndgameState : State
     {
-        public void HandleMove(Game game, ChessBoard board)
+        public void HandleMove(Game game)
         {
             Console.WriteLine("Игра завершилась, хотите выйти и перезапустить игру с другими условиями или взять реванш?");
             Console.WriteLine("Напишите 0 для выхода или любой другой ввод для реванша");

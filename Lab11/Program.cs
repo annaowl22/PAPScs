@@ -13,11 +13,11 @@
             {
                 Console.WriteLine("Напишите 0, если хотите выйти, 1 для настройки игры или любую другую клавишу, чтобы сыграть классическую партию");
                 input = Console.ReadLine();
-                if(string.IsNullOrWhiteSpace(input))
-                {
-                    Console.WriteLine("Ввод не может быть пустым. Следуйте инструкции");
-                    continue;
-                }
+                //if(string.IsNullOrWhiteSpace(input))
+                //{
+                //    Console.WriteLine("Ввод не может быть пустым. Следуйте инструкции");
+                //    continue;
+                //}
                 if(input == "0")
                 {
                     break;
@@ -79,6 +79,24 @@
                 {
                     game.RegisterObserver(new Onexbet());
                 }
+
+                Console.WriteLine("Хотите ли вы, чтобы ИИ управлял шахматами? Напишите 1, если чёрными, 2 белыми, иначе без ИИ");
+
+                switch (Console.ReadLine()) {
+                    case "1":
+                        game.readerBlack = new CoreChessEngineAdapter(game);
+                        game.readerWhite = new MoveConsoleReader();
+                        break;
+                    case "2":
+                        game.readerBlack = new MoveConsoleReader();
+                        game.readerWhite = new CoreChessEngineAdapter(game);
+                        break;
+                    default:
+                        game.readerBlack = new MoveConsoleReader();
+                        game.readerWhite = new MoveConsoleReader();
+                        break;
+                }
+
                 game.run();
             }
             Console.WriteLine("До следующей сессии!");

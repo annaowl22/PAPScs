@@ -1,8 +1,14 @@
-
+using ChessEngine.Engine;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 namespace Name
 {
-    class MoveReader
+    interface IMoveGetter
+    {
+        List<Field> read();
+        Piece pawnTurn(PieceColor color, Field position);
+    }
+    class MoveConsoleReader : IMoveGetter
     {
         private static readonly Regex MovePattern = new Regex(@"^([a-h])([1-8])-([a-h])([1-8])$", 
             RegexOptions.IgnoreCase | RegexOptions.Compiled);
@@ -10,7 +16,7 @@ namespace Name
         private static readonly Regex GoalPattern = new Regex(@"^Г[О]+Л$",RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex LosePattern = new Regex(@"^Сдаюсь$",RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex CheckPattern = new Regex(@"^Анализ$",RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        public static List<Field> read()
+        public List<Field> read()
         {
             List<Field> move = new List<Field>();
             Console.WriteLine("Введите ход в формате e2-e4 или признайте поражение словом СДАЮСЬ");
@@ -56,7 +62,7 @@ namespace Name
                 }
             }
         }
-        public static Piece pawnTurn(PieceColor color, Field position)
+        public Piece pawnTurn(PieceColor color, Field position)
         {
             Console.WriteLine("Введите символ фигуры, в которую хотите превратить пешку");
             string? input;
@@ -92,6 +98,129 @@ namespace Name
                 {
                     Console.WriteLine("Некорректный ввод");
                 }
+            }
+        }
+    }
+
+    class CoreChessEngineAdapter : IMoveGetter
+    {
+        private readonly Game game;
+        private string input;
+
+        public CoreChessEngineAdapter(Game game)
+        {
+            this.game = game;
+        }
+
+        public List<Field> read()
+        {
+            string fen = "";
+
+            for (int h = 8; h-- > 0; )
+            {
+                int spaces = 0;
+                for (int v = 0; v < 8; v++) {
+                    Piece? piece = game.board.grid[v, h];
+                    if (piece == null)
+                        spaces++;
+                    else {
+                        if (spaces > 0)
+                            fen += spaces;
+                        spaces = 0;
+
+                        string c = piece.symbol;
+                        c = (piece.color == PieceColor.White) ? c.ToUpper() : c.ToLower();
+                        
+                        fen += c;
+                    }
+                }
+
+                if (spaces > 0)
+                    fen += spaces;
+
+                if (h > 0) fen += '/';
+            }
+
+            fen += ' ';
+
+            fen += (game.state is WhiteTurnState) ? 'w' : 'b';
+            fen += ' ';
+
+            string castling = "";
+
+            bool whiteRookMoved = true;
+            bool blackRookMoved = true;
+
+            foreach (var item in game.board.grid) {
+                if (item == null) continue;
+
+                if (item.name != "rook") continue;
+
+                if (item.color == PieceColor.White)
+                    whiteRookMoved = item.hasMoved;
+                else
+                    blackRookMoved = item.hasMoved;
+            }
+
+            if (!game.board.getKing(PieceColor.White).hasMoved && !whiteRookMoved)
+                castling += "KQ";
+
+
+            if (!game.board.getKing(PieceColor.Black).hasMoved && !blackRookMoved)
+                castling += "kq";
+
+
+            fen += (castling == "") ? "-" : castling; //рокировка //castling
+            fen += ' ';
+
+            fen += "- "; //en passant //взятое на переходе
+
+            fen += "0 "; //Halfmove clock //Счётчик полуходов
+
+            fen += "1"; //Fullmove number //Номер хода
+
+            Console.WriteLine(fen);
+            //Console.ReadLine();
+
+            var engine = new Engine(fen);
+            engine.GameDifficulty = Engine.Difficulty.Easy;
+            engine.AiPonderMove();
+            MoveContent lastMove = engine.GetMoveHistory().ToArray()[0];
+            string move = lastMove.GetPureCoordinateNotation();
+
+            if (move.Length > 4)
+                input = move.Substring(5);
+            else
+                input = "";
+
+            Console.WriteLine(move);
+            Console.WriteLine(input);
+            //Console.ReadLine();
+
+            return new List<Field>
+            {
+                new(move[0]-'a', move[1]-'1'),
+                new(move[2]-'a', move[3]-'1')
+            };
+        }
+
+        public Piece pawnTurn(PieceColor color, Field position)
+        {
+            switch (input) {
+                case "Q":
+                    Console.WriteLine("Пешка превращается в Ферзя");
+                    return new Queen(color, position);
+                case "R":
+                    Console.WriteLine("Пешка превращается в Ладью");
+                    return new Rook(color, position);
+                case "N":
+                    Console.WriteLine("Пешка превращается в Коня");
+                    return new Knight(color, position);
+                case "B":
+                    Console.WriteLine("Пешка превращается в Слона");
+                    return new Bishop(color, position);
+                default:
+                    throw new Exception($"Неверный ход ИИ: пешка не может стать {input}");
             }
         }
     }

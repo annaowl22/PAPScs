@@ -3,12 +3,14 @@ namespace Name
 {
     class Game
     {
-        private State state;
+        public State state { get; private set; }
         private State starting_state;
-        private ChessBoard board;
+        public ChessBoard board { get; private set; }
         private ChessSetup setup;
         private List<Observer> observers;
         public List<Field> last_move;
+        public IMoveGetter readerWhite;
+        public IMoveGetter readerBlack;
 
         public Game(State _state, ChessSetup _setup)
         {
@@ -50,7 +52,7 @@ namespace Name
             while (true)
             {
                 board.printBoard();
-                state.HandleMove(this, board);
+                state.HandleMove(this);
                 if (state is EndProgramState)
                 {
                     break;
