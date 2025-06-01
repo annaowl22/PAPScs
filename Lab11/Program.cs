@@ -11,7 +11,12 @@
             Game game;
             while(true)
             {
-                Console.WriteLine("Напишите 0, если хотите выйти, 1 для настройки игры или любую другую клавишу, чтобы сыграть классическую партию");
+                Console.WriteLine("""
+                0: выход
+                1: настройка игры
+                Любой другой ввод: сыграть классическую партию
+                """);
+
                 input = Console.ReadLine();
                 if(input == "0")
                 {
@@ -19,46 +24,40 @@
                 }
                 else if(input == "1")
                 {
-                    Console.WriteLine("Выберите шахматную ситуацию:");
-                    Console.WriteLine("1. Пешка белых проходит и превращается.");
-                    Console.WriteLine("2. Мат в один ход - белые ходят.");
-                    Console.WriteLine("3. Мат в два хода - белые ходят.");
-                    Console.WriteLine("4. Мат в три хода - белые ходят.");
-                    Console.WriteLine("5. Мат в два хода - черные ходят.");
-                    Console.WriteLine("[Enter]. Вернуться назад");
-                    input = Console.ReadLine();
-                    if(string.IsNullOrWhiteSpace(input))
+                    Console.WriteLine("""
+                    Выберите шахматную ситуацию:
+                    1: Пешка белых проходит и превращается.
+                    2: Мат в один ход - белые ходят.
+                    3: Мат в два хода - белые ходят.
+                    4: Мат в три хода - белые ходят.
+                    5: Мат в два хода - черные ходят.
+                    Любой другой ввод: Вернуться назад
+                    """);
+
+                    switch (Console.ReadLine())
                     {
-                        continue;
-                    }
-                    else if (input == "1")
-                    {
-                        setup = new ChessPawnTurnPosition();
-                        state = new WhiteTurnState();
-                    }
-                    else if (input == "2")
-                    {
-                        setup = new MateInOneTurnWhiteStart();
-                        state = new WhiteTurnState();
-                    }
-                    else if (input == "3")
-                    {
-                        setup = new MateInTwoTurnsWhiteStart();
-                        state = new WhiteTurnState();
-                    }
-                    else if (input == "4")
-                    {
-                        setup = new MateInThreeTurnsWhiteStart();
-                        state = new WhiteTurnState();
-                    }
-                    else if (input == "5")
-                    {
-                        setup = new MateInTwoTurnsWhiteStartSmall();
-                        state = new BlackTurnState();
-                    }
-                    else
-                    {
-                        break;
+                        case "1":
+                            setup = new ChessPawnTurnPosition();
+                            state = new WhiteTurnState();
+                            break;
+                        case "2":
+                            setup = new MateInOneTurnWhiteStart();
+                            state = new WhiteTurnState();
+                            break;
+                        case "3":
+                            setup = new MateInTwoTurnsWhiteStart();
+                            state = new WhiteTurnState();
+                            break;
+                        case "4":
+                            setup = new MateInThreeTurnsWhiteStart();
+                            state = new WhiteTurnState();
+                            break;
+                        case "5":
+                            setup = new MateInTwoTurnsWhiteStartSmall();
+                            state = new BlackTurnState();
+                            break;
+                        default:
+                            continue;
                     }
                 }
                 else
@@ -68,16 +67,22 @@
                 }
                 game = new Game(state, setup);
                 game.RegisterObserver(new Notator());
-                Console.WriteLine("Хотите подключить оценивание позиции? Введите любое число, если да, иначе пропустите ввод");
+                Console.WriteLine("Подключить оценивание позиции? Введите что-нибудь, если да, иначе пропустите ввод");
                 input = Console.ReadLine();
                 if (!string.IsNullOrWhiteSpace(input))
                 {
                     game.RegisterObserver(new Onexbet());
                 }
 
-                Console.WriteLine("Хотите ли вы, чтобы ИИ управлял шахматами? Напишите 1, если чёрными, 2 белыми, иначе без ИИ");
+                Console.WriteLine("""
+                Хотите ли вы, чтобы ИИ управлял шахматами?
+                1: ИИ ходит чёрными
+                2: ИИ ходит белыми
+                Любой другой ввод: ИИ нет
+                """);
 
-                switch (Console.ReadLine()) {
+                switch (Console.ReadLine())
+                {
                     case "1":
                         game.readerBlack = new CoreChessEngineAdapter(game);
                         game.readerWhite = new MoveConsoleReader();
@@ -87,7 +92,7 @@
                         game.readerWhite = new CoreChessEngineAdapter(game);
                         break;
                     default:
-                        game.readerBlack = new MoveConsoleReader();
+                        game.readerBlack = //new MoveConsoleReader(); //апофиг
                         game.readerWhite = new MoveConsoleReader();
                         break;
                 }
