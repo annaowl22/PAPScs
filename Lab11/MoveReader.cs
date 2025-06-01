@@ -105,11 +105,32 @@ namespace Name
     class CoreChessEngineAdapter : IMoveGetter
     {
         private readonly Game game;
-        private string input;
+        private string input = "";
+        private Engine.Difficulty difficulty;
 
         public CoreChessEngineAdapter(Game game)
         {
             this.game = game;
+
+            //🥴
+
+            Console.WriteLine("""
+            Сложность ИИ (насколько долго зависать?):
+            Можно числом от 0 или строкой, регистр не важен
+            """);
+
+            Console.WriteLine(string.Join(", ", Enum.GetNames(typeof(Engine.Difficulty))));
+
+            while (
+                !Enum.TryParse(Console.ReadLine(), true, out difficulty)
+                ||
+                !Enum.IsDefined(typeof(Engine.Difficulty), difficulty)
+            )
+            {
+                Console.WriteLine("Неверный ввод");
+            }
+
+            Console.WriteLine($"Сложность {difficulty}");
         }
 
         public List<Field> read()
@@ -183,7 +204,7 @@ namespace Name
             //Console.ReadLine();
 
             var engine = new Engine(fen);
-            engine.GameDifficulty = Engine.Difficulty.Easy;
+            engine.GameDifficulty = difficulty;
             engine.AiPonderMove();
             MoveContent lastMove = engine.GetMoveHistory().ToArray()[0];
             string move = lastMove.GetPureCoordinateNotation();
