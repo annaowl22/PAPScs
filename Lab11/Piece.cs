@@ -182,7 +182,7 @@ namespace Name
         public override List<Field> getPossibleMoves(ChessBoard board)
         {
             List<Field> moves = new List<Field>();
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical, position.Horizontal + i);
                 if (!field.IsValid())
@@ -199,7 +199,7 @@ namespace Name
                 }
                 moves.Add(field);
             }
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical, position.Horizontal - i);
                 if (!field.IsValid())
@@ -216,7 +216,7 @@ namespace Name
                 }
                 moves.Add(field);
             }
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical + i, position.Horizontal);
                 if (!field.IsValid())
@@ -233,7 +233,7 @@ namespace Name
                 }
                 moves.Add(field);
             }
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical - i, position.Horizontal);
                 if (!field.IsValid())
@@ -261,7 +261,7 @@ namespace Name
         public override List<Field> getPossibleMoves(ChessBoard board)
         {
             List<Field> moves = new List<Field>();
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical + i, position.Horizontal + i);
                 if (!field.IsValid())
@@ -278,7 +278,7 @@ namespace Name
                 }
                 moves.Add(field);
             }
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical + i, position.Horizontal - i);
                 if (!field.IsValid())
@@ -295,7 +295,7 @@ namespace Name
                 }
                 moves.Add(field);
             }
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical - i, position.Horizontal + i);
                 if (!field.IsValid())
@@ -312,7 +312,7 @@ namespace Name
                 }
                 moves.Add(field);
             }
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical - i, position.Horizontal - i);
                 if (!field.IsValid())
@@ -471,7 +471,7 @@ namespace Name
         public override List<Field> getPossibleMoves(ChessBoard board)
         {
             List<Field> moves = new List<Field>();
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical + i, position.Horizontal + i);
                 if (!field.IsValid())
@@ -488,7 +488,7 @@ namespace Name
                 }
                 moves.Add(field);
             }
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical + i, position.Horizontal - i);
                 if (!field.IsValid())
@@ -505,7 +505,7 @@ namespace Name
                 }
                 moves.Add(field);
             }
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical - i, position.Horizontal + i);
                 if (!field.IsValid())
@@ -522,7 +522,7 @@ namespace Name
                 }
                 moves.Add(field);
             }
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical - i, position.Horizontal - i);
                 if (!field.IsValid())
@@ -539,7 +539,7 @@ namespace Name
                 }
                 moves.Add(field);
             }
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical, position.Horizontal + i);
                 if (!field.IsValid())
@@ -556,7 +556,7 @@ namespace Name
                 }
                 moves.Add(field);
             }
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical, position.Horizontal - i);
                 if (!field.IsValid())
@@ -573,7 +573,7 @@ namespace Name
                 }
                 moves.Add(field);
             }
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical + i, position.Horizontal);
                 if (!field.IsValid())
@@ -590,7 +590,7 @@ namespace Name
                 }
                 moves.Add(field);
             }
-            for (int i = 1; i < 7; i++)
+            for (int i = 1; i < 8; i++)
             {
                 Field field = new Field(position.Vertical - i, position.Horizontal);
                 if (!field.IsValid())

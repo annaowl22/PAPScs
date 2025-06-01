@@ -59,6 +59,12 @@ namespace Name
                         game.ChangeState(new EndgameState());
                         break;
                     }
+                    if (board.isDraw(PieceColor.White))
+                    {
+                        Console.WriteLine("Ничья!");
+                        game.ChangeState(new EndgameState());
+                        break;
+                    }
                     game.ChangeState(new WhiteTurnState());
                     break;
                 }
@@ -107,6 +113,12 @@ namespace Name
                     if (board.isCheckMate(PieceColor.Black))
                     {
                         Console.WriteLine("Мат Королю чёрных!");
+                        game.ChangeState(new EndgameState());
+                        break;
+                    }
+                    if (board.isDraw(PieceColor.Black))
+                    {
+                        Console.WriteLine("Ничья!");
                         game.ChangeState(new EndgameState());
                         break;
                     }
