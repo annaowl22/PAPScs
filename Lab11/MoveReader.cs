@@ -1,6 +1,6 @@
 using ChessEngine.Engine;
-using System.ComponentModel;
 using System.Text.RegularExpressions;
+
 namespace Name
 {
     interface IMoveGetter

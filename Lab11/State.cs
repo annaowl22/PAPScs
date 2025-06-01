@@ -4,7 +4,6 @@ namespace Name
     interface State
     {
         public abstract void HandleMove(Game game);
-        //public abstract void HandleMove(Game game, ChessBoard board, IMoveAd);
     }
 
     class EndProgramState : State

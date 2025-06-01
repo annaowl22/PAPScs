@@ -13,11 +13,6 @@
             {
                 Console.WriteLine("Напишите 0, если хотите выйти, 1 для настройки игры или любую другую клавишу, чтобы сыграть классическую партию");
                 input = Console.ReadLine();
-                //if(string.IsNullOrWhiteSpace(input))
-                //{
-                //    Console.WriteLine("Ввод не может быть пустым. Следуйте инструкции");
-                //    continue;
-                //}
                 if(input == "0")
                 {
                     break;
