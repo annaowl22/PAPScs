@@ -1,0 +1,3 @@
+[submodule "ChessCore"]
+	path = ChessCore
+	url = https://github.com/3583Bytes/ChessCore
