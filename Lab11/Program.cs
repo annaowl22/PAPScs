@@ -7,18 +7,39 @@ namespace TAYAK1
         public static bool Skobe(string input)
         {
             int count = 0;
-            for(int i = 0; i < input.Length; i++)
+            bool wassign = false;
+            bool wasclosed = false;
+            for (int i = 0; i < input.Length; i++)
             {
-                if(input[i] == '(')
+                if (input[i] == '(')
                 {
                     count++;
-                }else if(input[i] == ')')
-                {
-                    count--;
-                    if(count < 0)
+                    if (!wassign && wasclosed)
                     {
                         return false;
                     }
+                    wasclosed = false;
+                }
+                else if (input[i] == ')')
+                {
+                    count--;
+                    wassign = false;
+                    wasclosed = true;
+                    if (count < 0)
+                    {
+                        return false;
+                    }
+                }
+                else if (char.IsDigit(input[i]) || input[i] == '.')
+                {
+                    if (!wassign && wasclosed)
+                    {
+                        return false;
+                    }
+                }
+                else if (IsSign(input[i]))
+                {
+                    wassign = true;
                 }
             }
             if (count == 0)
@@ -49,10 +70,24 @@ namespace TAYAK1
             int count = 0;
             for (int i = 0; i < input.Length; i++)
             {
-                if(IsSign(input[i]) || input[i] == ',')
+                if (input[i] == ')')
+                    {
+                    if (count != 0)
+                        {
+                            Console.WriteLine("Error at " + i.ToString());
+                            return false;
+                        }
+                    count = 0;
+                    }
+                else if (input[i] == '(')
+                    {
+                        count = 1;
+                    }
+                else if (IsSign(input[i]) || input[i] == ',')
                 {
                     if (count == 2 || count == 1 && input[i] != '-')
                     {
+                        Console.WriteLine("Error at " + i.ToString());
                         return false;
                     }
                     else
@@ -71,6 +106,7 @@ namespace TAYAK1
             }
             else
             {
+                Console.WriteLine("Error at the end");
                 return false;
             }
         }
@@ -78,13 +114,45 @@ namespace TAYAK1
         {
             bool prevdot = false;
             bool hasDot = false;
-            for(int i = 0; i < input.Length; i++)
+            bool ended = false;
+            bool started = false;
+            for (int i = 0; i < input.Length; i++)
             {
+                if (IsSign(input[i]) || input[i] == ',' || input[i] == ' ')
+                {
+                    if (prevdot)
+                    {
+                        Console.WriteLine("Error at " + i.ToString() + " point");
+                        return false;
+                    }
+                    hasDot = false;
+                    if (input[i] == ' ')
+                    {
+                        ended = true;
+                    }
+                    else
+                    {
+                        started = false;
+                        ended = false;
+                    }
+                    prevdot = false;
+                }
+                else
+                {
+                    if (started && ended)
+                    {
+                        Console.WriteLine("Error at " + i.ToString() + " space inside");
+                        return false;
+                    }
+                }
                 if (input[i] == '.')
                 {
+                    started = true;
+                    ended = false;
                     prevdot = true;
                     if (hasDot)
                     {
+                        Console.WriteLine("Error at " + i.ToString());
                         return false;
                     }
                     else
@@ -92,84 +160,97 @@ namespace TAYAK1
                         hasDot = true;
                     }
                 }
-                else
+                if (char.IsDigit(input[i]))
                 {
-                    if (IsSign(input[i]) || input[i] == ',')
-                    {
-                        if (prevdot)
-                        {
-                            return false;
-                        }
-                        hasDot = false;
-                    }
+                    started = true;
                     prevdot = false;
-                }
+                    ended = false;
+                }                
             }
             return true;
         }
         public static bool Words(string input)
         {
             char prev = ' ';
-            for(int i = 0; i < input.Length; i++)
+            for (int i = 0; i < input.Length; i++)
             {
-                if(prev == 'g' && !(input[i] == '('))
+                if (prev == 'g' && !(input[i] == '('))
                 {
+                    Console.WriteLine("Error function no skobes at " + i.ToString());
                     return false;
                 }
-                if(!(input[i] == '.' || char.IsDigit(input[i])) || IsSign(input[i]) || input[i] == ' ' || input[i] == ',')
+                if (!(input[i] == '.' || char.IsDigit(input[i]) || IsSign(input[i]) || input[i] == ' ' || input[i] == ','))
                 {
-                    if(!(input[i] == 'l' && !(prev == '.' || char.IsDigit(prev)) || input[i] == 'o' && prev == 'l' || input[i] == 'g' && prev == 'o'))
+                    if (!(input[i] == 'l' && !(prev == '.' || char.IsDigit(prev)) || input[i] == 'o' && prev == 'l' || input[i] == 'g' && prev == 'o'))
                     {
+                        Console.WriteLine("Error letter at " + i.ToString());
+                        Console.WriteLine("Previous " + prev + " this " + input[i]);
                         return false;
                     }
                 }
+                prev = input[i];
             }
             return true;
         }
 
         public static bool Logs(string input)
         {
-            for(int i = 0; i < input.Length - 3; i++)
+            for(int i = 0; i < input.Length; i++)
             {
                 if(input[i] == ',')
                 {
+                    Console.WriteLine("Error comma outside at " + i.ToString());
                     return false;
                 }
-                if(input[i] == 'l' && input[i+1] == 'o' && input [i+2] == 'g' && input[i+3] == '(')
+                if (i < input.Length - 3)
                 {
-                    int countSkobes = 1;
-                    int countCommas = 0;
-                    int commaIndex = 0;
-                    int ind = i + 1;
-                    while(countSkobes != 0 && ind < input.Length)
+                    if (input[i] == 'l' && input[i + 1] == 'o' && input[i + 2] == 'g' && input[i + 3] == '(')
                     {
-                        if(input[ind] == ',')
+                        int countSkobes = 1;
+                        int countCommas = 0;
+                        int commaIndex = 0;
+                        int ind = i + 4;
+                        while (countSkobes != 0 && ind < input.Length)
                         {
-                            if(countCommas > 0)
+                            if (input[ind] == ',')
                             {
+                                if (countCommas > 0)
+                                {
+
+                                    Console.WriteLine("Error many commas at " + ind.ToString());
+                                    return false;
+                                }
+                                countCommas = 1;
+                                commaIndex = ind;
+                            }
+                            else if (input[ind] == '(')
+                            {
+                                countSkobes++;
+                            }
+                            else if (input[ind] == ')')
+                            {
+                                countSkobes--;
+                            }
+                            ind++;
+                        }
+                        if (countCommas != 1)
+                        {
+                            return false;
+                        }
+                        if (countSkobes != 0)
+                            {
+
+                                Console.WriteLine("Error not closed at " + ind.ToString()+' '+countSkobes.ToString());
                                 return false;
                             }
-                            commaIndex = ind;
-                        }
-                        else if(input[ind] == '(')
+                        if (!(Logs(input.Substring(i + 4, commaIndex - i - 4)) && Logs(input.Substring(commaIndex + 1, ind - commaIndex - 2))))
                         {
-                            countSkobes++;
+
+                            Console.WriteLine("Error inside at " + ind.ToString());
+                            return false;
                         }
-                        else if(input[ind] == ')')
-                        {
-                            countSkobes--;
-                        }
-                        ind++;
+                        i = ind;
                     }
-                    if(countSkobes != 0)
-                    {
-                        return false;
-                    }
-                    if(!(Logs(input.Substring(i+4, commaIndex - i - 4)) && Logs(input.Substring(commaIndex + 1, ind - commaIndex - 2))))
-                    {
-                        return false;
-                    }
-                    i = ind;
                 }
             }
             return true;
@@ -226,6 +307,8 @@ namespace TAYAK1
                 {
                     Console.WriteLine("You wrote some bullshit");
                 }
+                Console.WriteLine("Enter the sentence or 0 to end");
+                input = Console.ReadLine();
             }
             Console.WriteLine("Goodbye");
         }
