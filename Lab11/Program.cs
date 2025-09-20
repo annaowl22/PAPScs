@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace TAYAK1
 {
@@ -16,6 +17,7 @@ namespace TAYAK1
                     count++;
                     if (!wassign && wasclosed)
                     {
+                        Console.WriteLine("Opened without sign between skobes");
                         return false;
                     }
                     wasclosed = false;
@@ -27,6 +29,7 @@ namespace TAYAK1
                     wasclosed = true;
                     if (count < 0)
                     {
+                        Console.WriteLine("Closing without opening");
                         return false;
                     }
                 }
@@ -34,10 +37,11 @@ namespace TAYAK1
                 {
                     if (!wassign && wasclosed)
                     {
+                        Console.WriteLine("Number without sign after skobes "+i.ToString());
                         return false;
                     }
                 }
-                else if (IsSign(input[i]))
+                else if (IsSign(input[i])||input[i]==',')
                 {
                     wassign = true;
                 }
@@ -212,7 +216,7 @@ namespace TAYAK1
                         int ind = i + 4;
                         while (countSkobes != 0 && ind < input.Length)
                         {
-                            if (input[ind] == ',')
+                            if (input[ind] == ',' && countSkobes == 1)
                             {
                                 if (countCommas > 0)
                                 {
@@ -287,9 +291,245 @@ namespace TAYAK1
         }
         public static bool AllChecksSilent(string input)
         {
-            return (Floats(input) && Signs(input) && Skobe(input) && Words(input) && Logs(input));
+            return Floats(input) && Signs(input) && Skobe(input) && Words(input) && Logs(input);
         }
     }
+
+    class Calculator
+    {
+        public static bool hasError = false;
+        public static int seekPlusMinus(string input)
+        {
+            int countSkobes = 0;
+            for (int i = input.Length - 1; i > 0; i--)
+            {
+                if (input[i] == ')')
+                {
+                    countSkobes++;
+                }
+                else if (input[i] == '(')
+                {
+                    countSkobes--;
+                }
+                else if (input[i] == '+')
+                {
+                    if (countSkobes == 0)
+                    {
+                        return i;
+                    }
+                }
+                else if (input[i] == '-')
+                {
+                    if (countSkobes == 0 && (!Check.IsSign(input[i - 1]) || input[i - 1] == '('))
+                    {
+                        return i;
+                    }
+                }
+            }
+            return -1;
+        }
+
+        public static int seekMulDiv(string input)
+        {
+            int countSkobes = 0;
+            for (int i = input.Length - 1; i > 0; i--)
+            {
+                if (input[i] == ')')
+                {
+                    countSkobes++;
+                }
+                else if (input[i] == '(')
+                {
+                    countSkobes--;
+                }
+                else if (input[i] == '*' || input[i] == '/')
+                {
+                    if (countSkobes == 0)
+                    {
+                        return i;
+                    }
+                }
+            }
+            return -1;
+        }
+        static int seekComma(string input)
+        {
+            int countSkobes = 0;
+            for (int i = 0; i < input.Length; i++)
+            {
+                if (input[i] == '(')
+                {
+                    countSkobes++;
+                }
+                else if (input[i] == ')')
+                {
+                    countSkobes--;
+                }
+                else if (input[i] == ',')
+                {
+                    if (countSkobes == 0)
+                    {
+                        return i;
+                    }
+                }
+            }
+            return -1;
+        }
+        static float makeDivision(float left, float right)
+        {
+            if (right == 0)
+            {
+                hasError = true;
+                Console.WriteLine("Division by zero");
+                return 0;
+            }
+            else
+            {
+                return left / right;
+            }
+        }
+        static float getLog(float num, float osn)
+        {
+            if (num > 0 && osn > 0 && osn != 1)
+            {
+                return (float)Math.Log(num) / (float)Math.Log(osn);
+            }
+            else
+            {
+                Console.WriteLine("Incorrect argument in logarythm");
+                hasError = true;
+                return 0;
+            }
+        }
+        static float makeNumber(string input)
+        {
+            int negative;
+            bool hasDot = false;
+            int afterDot = 1;
+            float result = 0;
+            if (input[0] == '-')
+            {
+                negative = 1;
+            }
+            else
+            {
+                negative = 0;
+            }
+            for (int i = negative; i < input.Length; i++)
+            {
+                if (input[i] == '.')
+                {
+                    hasDot = true;
+                }
+                else if (hasDot)
+                {
+                    result += (input[i] - '0') * (float)Math.Pow(0.1, afterDot);
+                }
+                else
+                {
+                    result *= 10;
+                    result += input[i] - '0';
+                }
+            }
+            if (negative == 1)
+            {
+                result *= -1;
+            }
+            return result;
+
+        }
+        public static float solve(string input)
+        {
+            int index = -1;
+            string left;
+            string right;
+            float leftResult;
+            float rightResult;
+            Console.WriteLine("Solving for " + input);
+            index = seekPlusMinus(input);
+            if (index != -1)
+            {
+                left = input.Substring(0, index);
+                leftResult = solve(left);
+                right = input.Substring(index + 1, input.Length - index - 1);
+                rightResult = solve(right);
+                if (hasError)
+                {
+                    return 0;
+                }
+                if (input[index] == '+')
+                {
+                    return leftResult + rightResult;
+                }
+                else
+                {
+                    return leftResult - rightResult;
+                }
+            }
+            index = seekMulDiv(input);
+            if (index != -1)
+            {
+                left = input.Substring(0, index);
+                leftResult = solve(left);
+                right = input.Substring(index + 1, input.Length - index - 1);
+                rightResult = solve(right);
+                if (hasError)
+                {
+                    return 0;
+                }
+                if (input[index] == '*')
+                {
+                    return leftResult * rightResult;
+                }
+                else
+                {
+                    return makeDivision(leftResult, rightResult);
+                }
+            }
+            if (input[0] == '(')
+            {
+                return solve(input.Substring(1, input.Length - 2));
+            }
+            if (input[0] == 'l')
+            {
+                index = seekComma(input.Substring(4, input.Length - 5));
+                Console.WriteLine("Index of comma is " + index.ToString());
+                left = input.Substring(4, index);
+                right = input.Substring(index + 5, input.Length - index - 6);
+                leftResult = solve(left);
+                rightResult = solve(right);
+                if (hasError)
+                {
+                    return 0;
+                }
+                return getLog(leftResult, rightResult);
+            }
+            return makeNumber(input);
+        }
+        public static float StartSolve(string input)
+        {
+            hasError = false;
+            if (input == "")
+            {
+                Console.WriteLine("Empty");
+                return 0;
+            }
+            if (!Check.AllChecks(input))
+            {
+                Console.WriteLine("Incorrect");
+                return 0;
+            }
+            float result = solve(input.Replace(" ",""));
+            if (hasError)
+            {
+                Console.WriteLine("Error in process");
+                return 0;
+            }
+            Console.WriteLine("The answer is " + result.ToString());
+            return 1;
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
@@ -299,13 +539,9 @@ namespace TAYAK1
             string input = Console.ReadLine();
             while (input != "0")
             {
-                if (Check.AllChecks(input))
+                if (Calculator.StartSolve(input)==0)
                 {
-                    Console.WriteLine("The sentence is correct");
-                }
-                else
-                {
-                    Console.WriteLine("You wrote some bullshit");
+                    Console.WriteLine("The sentence is incorrect. Try again");
                 }
                 Console.WriteLine("Enter the sentence or 0 to end");
                 input = Console.ReadLine();
